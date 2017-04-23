@@ -1,0 +1,32 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{times}
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+%\usepackage{subfigure} 
+
+% For citations
+\usepackage{natbib}
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\input{../common/defs.tex}
+\usepackage{xr}
+\externaldocument{lv_bsets}
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2017} with
+% \usepackage[nohyperref]{icml2017} above.
+\usepackage{hyperref}
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+
+
+
+\begin{document}
+\maketitle
+
+\bibliography{../common/refs.bib}
+\bibliographystyle{authordate1}
+
+\end{document} 

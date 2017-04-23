@@ -1,0 +1,27 @@
+\section{Methodology}
+
+\textbf{Feature extraction:}
+The dataset we use for the experiments discussed in this document is composed of features extracted from the MIMIC database.
+More sepcifically rows the dataset correspond to individual admissions and columns are features.
+The rows are all represented as one-hot-encodings where an index takes the value 1 if the feature at that index was recorded for the admission.
+The total set of features were taken from  unique prescriptions, procedures and diagnoses events from the MIMIC.
+We did not actually use the codes verbatim, but found UMLS concepts that most closely matched each code. Unified Medical Language System (UMLS)
+concepts are a hierarchical categorization of medical concepts which seved to combine icd-9 codes associated with similar medical concepts, and to 
+put drug codes and ICD-9 codes in the same space. Since the number of features at this point was $\approx$ 20,000, we removed the rarest features to 
+trim it down to $\approx 800$, with $\approx$ 50,000 admissions in total. We then split the dataset into train, validation and test subsets which have 
+sizes observing the numbers in \ref{table:splits}.
+
+
+\begin{table}[h!]
+\centering
+\caption{Train-Test-Validation}
+\label{table:splits}
+\begin{tabular}{|l|l|l|l|}
+\hline
+               & Mortality & Aspirin & Cancer \\ \hline
+Examples in train      & 41282     & 2037    & 734    \\ \hline
+Examples in validation & 5899      & 623     & 231    \\ \hline
+Examples in test       & 11795     & 304     & 111       \\ \hline
+\end{tabular}
+\caption*{Sizes of the train/test/validation splits for different labels.}
+\end{table}

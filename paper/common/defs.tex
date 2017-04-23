@@ -1,0 +1,67 @@
+\usepackage{hyperref}
+\usepackage{pbox}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{comment}
+\usepackage{booktabs}       
+\usepackage[tableposition=top]{caption}
+\usepackage[titletoc,toc,title]{appendix}
+\usepackage{subcaption}
+\usepackage{amsfonts}       
+\usepackage{nicefrac}       
+\usepackage{microtype}      
+\usepackage{graphicx}
+\usepackage[raggedright]{sidecap}
+\usepackage{natbib}
+\usepackage{xspace}
+\usepackage{todonotes}
+\usepackage{amsmath}
+\usepackage{amsopn}
+\usepackage{multirow}
+
+\newcommand{\KLanneal}{anneal-KL}
+\newcommand{\LRp}{$\textbf{lr}:p_{\theta}$}
+\newcommand{\qinit}{$\textbf{init}:q_{\phi}$}
+\usepackage{tikz}
+\newcommand{\pxz}{p_{\theta}(x|z)}
+\newcommand{\qzx}{q_{\phi}(z|x)}
+\DeclareMathOperator{\KL}{KL}
+%\DeclareMathOperator{\E}{E}
+\newcommand{\E}{\gamma(z)}
+\newcommand{\Exp}[2]{\mathop{\mathbb{E}}_{#2}\left[#1\right]}
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\newcommand{\local}{\psi(x)}
+\newcommand{\localopt}{\hat{\psi(x)}}
+\newcommand{\MLP}{\text{MLP}}
+\newcommand{\elbo}{\mathcal{L}(x;\theta,\phi)}
+\newcommand{\Model}[2]{#1-\text{M}#2}
+
+\newcommand{\jacob}{\mathcal{J}(z)}
+\newcommand{\jacoblog}{\mathcal{J}(z)^{\text{log}}}
+\newcommand{\jacobprob}{\mathcal{J}(z)^{\text{prob}}}
+\newcommand{\jacobpot}{\mathcal{J}(z)^{\text{pot}}}
+
+
+\newcommand{\javexmeanlog}{\mathcal{J}_{\textbf{mean}}^{\text{log}}}
+\newcommand{\javexmeanprob}{\mathcal{J}_{\textbf{mean}}^{\text{prob}}}
+\newcommand{\javexmeanpot}{\mathcal{J}_{\textbf{mean}}^{\text{pot}}}
+
+\newcommand{\jacobat}[1]{\mathcal{J}(#1)}
+\newcommand{\javexmean}{\mathcal{J}_{\textbf{mean}}}%\mathbb{E}}}
+\newcommand{\javexmode}{\mathcal{J}_{\textbf{mode}}}%\mathbb{\mu}}}
+\newcommand{\jacobcond}{\mathcal{J}_{\textbf{cond}}(x)}%z}}
+\newcommand{\javexcond}{\mathcal{J}_{\textbf{cond}}(x)}%z}}
+
+
+\newcommand{\R}[1]{\mathbb{R}^{#1}}
+\newcommand{\dimstoc}{K}
+\newcommand{\dimobs}{V}
+%% \newcommand{\dimstoc}{\textbf{ds}}
+%% \newcommand{\dimobs}{\textbf{do}}
+
+\newcommand{\NDC}{{[\bf N]}}
+\newcommand{\IDX}{{[\bf I9]}}
+\newcommand{\IDXPROC}{{[\bf I9 Proc]}}
+\newcommand{\CPT}{{[\bf C]}}
