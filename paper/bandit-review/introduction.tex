@@ -1,5 +1,15 @@
 \section{Introduction}
 
+The multi-armed bandit scenario is synonymous to a class of computer science problems in which an online learner seeks to minimise her regret over a number of actions. In particular to the bandit setting, at each round $t$ only the loss of the given action is disclosed to the learner. The learner thus finds herself in a partial information setting where learning becomes more difficult as reflected in the increase of in the optimal algorithmic bound from $\sqrt{\ln(K)T}$ in the full information setting to $\sqrt{KT}$ with $K$ representing the number actions available to the learner at each round; $T$, the total rounds. 
+
+In this paper, we review the findings of the papers \citep{alon, hazan, bertsimas}, summarise their main ideas and draw connections between them. Common to all of the papers, the authors expand on the analytical body of work related to the multi-armed bandit problem. We adopt the notation from \citep{alon, hazan}: formally, consider the family of action sets $\mathcal{K}\subset \mathbb{R}^n$. At round $t=1,2,3...$, the learner choses an action set ${\bf x}\in \mathcal{K}$, and suffers a loss $ f_t({\bf x}_t)$ with $ f_t\in [0,1]^n$ denoting the loss function at time $t$. In \citep{alon, hazan} the problem consists of minimising the regret  $R_T$, that is the loss with respect to the best action vector in hindsigt, for $T\to\infty$ defined as
+
+\begin{align}
+	R_T=\sum_{t=1}^Tf_t({\bf x}_t)-\min_{{\bf x}\in \mathcal{K}}\sum_{t=1}^T f_t({\bf x}),
+\end{align}
+
+where in \citep{alon} ${\bf x}={\bf e}_i$ the standard basis vector with 1 at position $i=\{1,...n\}$ and 0 everywhere else.
+
 We review the papers by
 \citep{alon, hazan, bertsimas} and describe the main ideas and connections. 
 
