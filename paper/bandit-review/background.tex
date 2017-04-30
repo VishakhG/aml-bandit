@@ -4,3 +4,93 @@
 
 
 \section{Main conceptual Ideas}
+\subsection{Total Variation }
+The paper by \citep{hazan} introduces the very ineresting notion of bounding
+the regret of an agent in the bandit setting by the total variation of the reward vector 
+that agent recieves, we discuss the primary conceptual ideas present in the paper here. \\
+
+\textbf{Intuition:}
+The premise of this paper is that it should be easier to learn in a setting where
+rewards change very little than in the setting where rewards are wildly variable. 
+The typical bounds for adversarial bandits don't take this into account and thus assume implicitly the 
+worst of the adversary. In many natural settings, however, the losses won't be as adversarial as they could be. For
+instance if you are planning a route to travel into work, the traffic may be unpredictable in general, but there 
+are certain things that can be exploited, like correlations with congestion and time of day for instance.\\
+
+\textbf{Total Variation and resevoir sampling}
+Taking this point of view, we first need a formal definition of variation to use.  \citep{hazan} uses the
+\textit{quadratic variation} of the loss vectors  which is defined as $Q_T := \sum_{t=1}^T || f_t - \mu ||^2$,
+where $f_t$ is the cost vector at time $t$ and $\mu$ is the mean of all the cost vectors
+$\mu = \sum_{t=1}^T f_t$. \\
+
+This is a good  way to talk about how unpredictable the losses assigned by our adversary are and allows us to bound the
+regret by this level of variability. The bounds given in the paper are of the form
+$\tilde{O}(\sqrt{Q})$ where $\tilde{O}$ is an upperbound which ignores $poly(log(T))$ factors
+particular to the problem setting. \\
+
+Though we now have a way of formalizing the degree to which our losses are adversarial its still unclear
+how to integrate the concept into the problem setting. The solution that \citep{hazan} gives for this is two-fold
+\begin{enumerate}
+\item
+  Model the mean to each component in an unbiased way to keep a tracking estimator of the reward vector 
+\item
+  sample a new point taking advantage of the knowledge of the old means of each component ($\tilde{\mu}$).
+\end{enumerate}
+
+The first step involves always keeping an unbiased estimate of the mean of each component (arm) of 
+the reward vector. This is done using a technique known as resevoir sampling.
+For each coordinate $i\in[n]$ we keep a vector of arbritrary size (hyper-parameter) and call it the resevoir $S_{i, k}$ of size $k$.
+The estimator of the mean $\tilde{\mu_t(i)}$ is then  $\tilde{\mu}(i) \frac{i}{k} \ sum_{j=1}^kS_{i, j}$. 
+\citep{hazan} show that this is an unbiased estimator for the mean of each component.\\
+
+
+\textbf{algorithm overview:}
+At a high level, the main algorithm is follow-the-regularized-leader (FTRL) with a particular
+sort of regularization  $\mathcal{R}(x)$ enforced by \textit{self concordant barrier functions}. This means we want our next sampled point 
+to minimize:  $x_t  argmin_{K}[\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}^T} + \mathcal{R}(x)]$ where $\eta$ is a learning rate. \\
+
+\textbf{self-concordant barriers:}
+We now go into the mathematical tools used in the paper based on the idea of self-concordant-barriers. To do this we need a few definitions and results.\\
+
+A convex function $\mathcal{R}(x)$,  defined on the interior of the convex compact set $K$ and having three continuous derivatives is said to be a $\mathcal{V}$ concordant barrier if the following 
+conditions hold:
+
+\begin{enumerate}
+\item
+  $\mathcal{R}(x_i) \rightarrow \infty$ along every sequence of points $x_i$ in the interior of $\mathcal{K}$ converges to a boundary point of $\mathcal{K}$.
+
+\item
+$\mathcal{R}$ satisfies $|\nabla^3 \mathcal{R}(x) [h, h, h]| \leq 2(h^T [\nabla^2 \mathcal{R}(x)]h)^{\frac{3}{2}}$ and $|\nabla \mathcal(R)(x)^T h| \leq \mathcal{V}^{\frac{1}{2}}[h^T \nabla^2 \mathcal{R}(x) h]^\frac{1}{2}$
+
+\end{enumerate}
+
+Another mathematical object of interest in the algorithm
+and regret bounds is something called a Dikin ellipsoid.
+
+We define Dikin ellipsoid of radius r centered at x to be the set :
+$W_r(x) = \{ y \in  \mathbb{R}^n : (||y - x||)_x \leq r \}$.
+
+Furthermore For any two distinct points x and y in the interior of $\mathcal{K}$,   the Minkowsky
+function $\pi_x(y)$ on $\mathcal{K}$ is 
+
+$\pi_x(y) = inf \{t \geq 0 : x + t^{-1}(y - x) \in \mathcal{K} \}$
+
+These definitions insinuate that $W_1{x} \subseteq \mathcal{K} \text{ for any } x \in \mathcal{K}$. Which 
+is useful because it allows us  to sample in an unbiased way from the feasible set.
+
+The main algorithm consists of two steps 
+\begin{enumerate}
+\item
+  SIMPLEXSAMPLE
+\item
+  ELLIPSOIDSAMPLE
+\end{enumerate}
+
+SIMPLEXSAMPLE does the resevoir sampling and maintains the estimator of the reward vector
+$f_t$. 
+
+ELLIPSOIDSAMPLE randomly chooses an actual point $y_t$ from the endpoints of the
+principle axes of the Dikin ellipsoid $W_1(x)$ centered at $x_t$. Due to the definitions and 
+results above, we know that this sample is in the feasible set of points. Furthermore its been shown in \citep{abernethy} that the sampling is unbiased and has low variation.
+The  $\tilde{\mu_t}$ that is calculated in SIMPLEXSAMPLE is incorporated in ELLIPSOIDSAMPLE for smarter exploration which allows regret bounds based on the total
+variation. 
