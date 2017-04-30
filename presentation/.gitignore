@@ -1,0 +1,14 @@
+*.aux 
+*.brf 
+lv_bsets.pdf
+*.log 
+*.bbl 
+*.blg 
+*.dvi 
+*.ps 
+*.out 
+*.fdb_latexmk 
+*.synctex.gz
+*.DS_Store
+*.el
+*.pdf
