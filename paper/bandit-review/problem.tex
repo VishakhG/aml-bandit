@@ -1,0 +1,19 @@
+\section{Problem Definitions}
+We adopt the notation from \citep{alon, hazan}: formally, consider the family of action sets $\mathcal{K}\subset \mathbb{R}^n$. At round $t=1,2,3...$, the learner choses an action set ${\bf x}\in \mathcal{K}$, and suffers a loss ${\bf f}_t\cdot{\bf x}_t)$ with ${\bf f}_t\in [0,1]^n$ denoting the cost vector at time $t$. In the general multi-armed bandit setting, the problem consists of minimising the regret $R_T$, that is the loss with respect to the best action vector in hindsight\footnote{Depending on the specific subfield, the problem is reformulated as maximising the reward function instead.}, for $T\to\infty$ defined as
+
+\begin{align}
+	R_T=\sum_{t=1}^T{\bf f}_t\cdot{\bf x}_t-\min_{{\bf x}\in \mathcal{K}}\sum_{t=1}^T {\bf f_t}\cdot{\bf x},
+\end{align}
+
+where ${\bf x}_t={\bf e}_{t,i}$ the standard basis vector with 1 at position $i=\{1,...,n\}$ and $0$ everywhere else. Thus, at each round $t$, the learner choses arm ${\bf e}_i$ and is only revealed the loss ${\bf f}_t\cdot{\bf e}_i)$ pertaining to that specific action $i$, that is ${\bf f}_{t,i}$.  
+
+In \citep{alon}, the authors extend the problem definition by introducing a \textit{feedback system}, $\{S_{t,i}\}_{i\in \mathcal{K}}$. The feedback system represents possible correlations between a set of actions. For instance, in the case of deciding which ads to display to a website user to maximise hits, if the user already clicked on a shoe ad, we can assume that the same user would likely click on another shoe ad. Formally, at each round, the feedback system defines the set of losses that will be revealed if action ${\bf x}_{i,t}$ was taken with ${\bf x}_{t,i}$ denoting the $i^{th}$ element of ${\bf x}_t$. Since $\{S_{t,i}\}_{i\in \mathcal{K}}$ can be modelled as a graph, the authors ask how the feedback system influences the regret bounds: Do denser or thinner graphs lead to better regret bounds? Which graph properties influence the regret bound? 
+
+The paper by \citep{bertsimas} considers the bandit linear optimization problem in which $\mathcal{K}$ is a compact set, and the cost function ${\bf f}_t$ is linear. Note that ${\bf x}_t\not={\bf e}_i$ necessarily, but ${\bf x}_t$ now represents a point in the simplex $\mathcal{K}$ on which we are doing coordinate descent in the best possible direction as the gradients are uknown. The authors then ask the question: Can the total variation $Q_T$ of the cost vectors ${\bf f}_t$ until time $T$ bound the regret?
+
+In contrast, \citep{hazan} studies the restless bandit problem. This problem differs in that each action $i$ in ${\bf x}_{t}$ is considered either \textit{active} or \textit{passive}, denoted as ${\bf x}_{t,i}^1$ and ${\bf x}_{t,i}^0$ respectively. Moreover, a finite state space $\mathcal{S_i}$ is attributed to each action that can take on any of the $s_i\in \mathcal{S_i}$ states, denoted as ${\bf x}_{t, i, s_i}$. Rewards are associated with each action based on its state, denoted as $R_{s_i}^1$ when active, and $R_{s_i}^0$ when passive. Moreover a Markovian transition matrix prescribes the probability $p^1_{s_is'_i}$ with which an active action transitions from state $s_i$ into $s_i'$; $p^0_{s_is_i'}$ in the passive case. In addition, let $0<\beta<1$ be a reward discount factor. The problem is then regarded as finding a Markovian policy $u\in \mathcal{U}$, where $\mathcal{U}$ is the set of all admissible policies, such that 
+
+\begin{align}
+	\max_{u\in\mathcal{U}}E\bigg[\sum_{t=0}^\infty(R_{s_1(t)}^{\alpha_1(t)}+...R_{s_n(t)}^{\alpha_n(t)})\beta^t\bigg],
+\end{align}
+with $s_i(t)$ and $a_i(t)$ denoting the state and mode (active or passive) for action $i$.

@@ -2,23 +2,4 @@
 
 The multi-armed bandit scenario is synonymous to a class of computer science problems in which an online learner seeks to minimise her regret over a number of actions. In particular to the bandit setting, at each round $t$ only the loss of the given action is disclosed to the learner. The learner thus finds herself in a partial information setting where learning becomes more difficult as reflected in the increase of in the optimal algorithmic bound from $\sqrt{\ln(K)T}$ in the full information setting to $\sqrt{KT}$ with $K$ representing the number actions available to the learner at each round; $T$, the total rounds. 
 
-In this paper, we review the findings of the papers \citep{alon, hazan, bertsimas}, summarise their main ideas and draw connections between them. Common to all of the papers, the authors expand on the analytical body of work related to the multi-armed bandit problem. We adopt the notation from \citep{alon, hazan}: formally, consider the family of action sets $\mathcal{K}\subset \mathbb{R}^n$. At round $t=1,2,3...$, the learner choses an action set ${\bf x}\in \mathcal{K}$, and suffers a loss $ f_t({\bf x}_t)$ with $ f_t\in [0,1]^n$ denoting the loss function at time $t$. In \citep{alon, hazan} the problem consists of minimising the regret  $R_T$, that is the loss with respect to the best action vector in hindsigt, for $T\to\infty$ defined as
-
-\begin{align}
-	R_T=\sum_{t=1}^Tf_t({\bf x}_t)-\min_{{\bf x}\in \mathcal{K}}\sum_{t=1}^T f_t({\bf x}),
-\end{align}
-
-where in \citep{alon} ${\bf x}={\bf e}_i$ the standard basis vector with 1 at position $i=\{1,...n\}$ and 0 everywhere else.
-
-We review the papers by
-\citep{alon, hazan, bertsimas} and describe the main ideas and connections. 
-
-\textbf{Related Work:} 
-The paper by 
-\citep{alon} uses graphs to represent how much information an agent recieves about 
-other actions after choosing to take an action at every round. 
-
-\citep{hazan} describes a novel setting for non-stochastic bandits where bounds are given with respect to the total variation of a reward sequence. 
-
-\citep{bertsimas} describes a series of LP-relaxations for approximately solving
-the restless bandit problem.
+In this paper, we review the findings of the papers \citep{alon, hazan, bertsimas}. Common to all of the papers, the authors expand on the analytical body of work related to the multi-armed bandit problem. In particular, \citep{alon} considers the adversarial bandit problem in which the loss of several actions are revealed based on a feedback graph at each round. \citep{hazan} develops a series of linear programming relaxations for approximately solving restless bandit problem. Lastly, \citep{bertsimas} bounds the regret in the non-stochastic bandit setting by the total variation in the loss functions. In the following, we first expound on the problem areas of the papers. Subsequently, we introduce the papers' novel conceptual ideas before backing them up with their respective analyses. Lastly, we provide a simple implementation of ... before rounding off with concluding remarks.
