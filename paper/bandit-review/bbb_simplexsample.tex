@@ -1,0 +1,26 @@
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+    \STATE{
+      Predict $y_t = \gamma e_{i,t}$that is, the $i_{t}$-th standard basis vector scaled by 
+      $\gamma$
+    }
+    \STATE{Observe the cost $f_{t}^T y_{t} = f_{t}(i_t)$}
+
+    \IF{some bucket for $i_{t}$ is empty}
+    \STATE{Set $j$ to the index of empty bucket}
+    \ELSE
+    \STATE{Set j uniformly at random from $\{1, ... ,k\}$}
+    \ENDIF \\
+    
+    \STATE{Update the sample $S_{i,j} = \frac{1}{\gamma}f_{t}(i_t)$} \\
+    \IF{$t \leq nk$}
+    \STATE{Return $\tilde{\mu_t} = 0$}
+    \ELSE
+    \STATE{
+      Return $\tilde{\mu_t}$ defined as :
+      $\forall i \in \{1, 2, ... ,n\} $ Set $ \tilde{\mu_t}(i):= \frac{1}{k} \sum_{j=1}^k S_{i,j}$
+    }
+    \ENDIF
+  \end{algorithmic}
+  \caption{\label{alg:seeifrelin} SIMPLEXSAMPLE($i_t$)}
+\end{algorithm}
