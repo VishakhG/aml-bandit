@@ -29,7 +29,7 @@
       \ELSE
       \STATE{
         Set $\tilde{\mu_t} = \mu_{t-1}$ \\
-        Set $\tilde{f_t} \leftarrow ELLIPSOIDSAMPLE(x_t, \tilde{mu_t})$
+        Set $\tilde{f_t} \leftarrow ELLIPSOIDSAMPLE(x_t, \tilde{\mu_t})$
       }
       \ENDIF \\
       $x_{t+1} = argmin_{x \in \mathcal{K}}[\eta \sum_{\tau =1}^t \tilde{f_{\tau}^T} x + \mathcal{R}(x)]$

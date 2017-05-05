@@ -14,5 +14,59 @@ to analyze the choices that were made.
 \input{bbb_simplexsample.tex}
 \input{bbb_ellipsoidsample.tex}
 
+%descriptions
+Now that we have formally stated the algorithms, let's try and understand
+what each one does and the main ideas being employed. 
+
+\textbf{Main Algorithm}
+Naturally we start at the top level algorithm \textit{bandit online linear optimization}.
+The algorithm has three main parts: calling SIMPLEX-SAMPLE occasionally, calling ELLIPSOID-SAMPLE
+occasionally and updating $x_t$ at every round. \\
+
+We see on lines 1-4 some initialization of the various variables involved. 
+We take as parameters $\eta, \mathcal{V} self concordant \mathcal{R}$ and a size 
+parameter $k$. We also initialize x to be the index to the minimum point in $\mathcal{R}(x)$ 
+and the estimate for the mean reward of each hand to be zero. \\
+
+We then loop through all the rounds. At each round we have the choice of exploring alone 
+with a $SIMPLEX-SAMPLE$ or exploring and exploiting with an $ELLIPSOID-SAMPLE$. We 
+let the proportion of time spent in either of these helper functions be determined by 
+the parameter $\eta$, the size of our reservoir $k$ and which stage we are in with respect to
+the optimization procedure as denoted by $t$. Specifically we let the proportion of time 
+we spend exploring grow smaller as time goes on (time spent in a SIMPLEX-SAMPLE) and the proportion of time spent exploring and exploiting go up in later stages (time spent in ELLIPSOID-SAMPLE).\\
+
+%TODO clarify what the $i_t$ step is doing 
+
+We can see from the algorithm that our estimate of the mean $\tilde{mu}$ of each arm as computed 
+using reservoir sampling only gets updated during the SIMPLEXSAMPLE procedure, but only gets 
+used in the ELLIPSOIDSAMPLE procedure. This matches our intuition that exploiting means using the
+information that we have collected regarding the losses of each arm and exploring involves gathering this statistic. We also see that $\tilde{f_t}$ is not updated when a SIMPLEXSAMPLE is taken,
+only when an ELLIPSOIDSAMPLE is taken. \\
+%TODO clarify why the f_t is not updated in more detail
+
+
+%Describe the SIMPLEX-SAMPLE procedure
+\textbf{SIMPLEXSAMPLE}
+Now we take a look at the SIMPLEXSAMPLE procedure whose job is simply to perform reservoir sampling on all the points in the feasible set with the given reservoir size.It does this when called, which as discussed earlier is a fraction of time $\frac{nk}{t}$ that decreases with time.
+SIMPLEXSAMPLE samples a random point $i \in [n]$ uniformly, the actual sampled point (arm) 
+is the corresponding vertex $\gamma e_{i_t}$. This vertex is of the scaled n-dimensional simplex
+and by assumption it has to be contained inside of $\mathcal{K}$. The loss is immediately received as $f_t(i_t)$. We then do reservoir sampling: if one of the slots in our reservoir for that
+point is empty then we put our loss in that slot, otherwise we kick one element out of the reservoir and put the new loss there. The point kicked out is done so at random uniformly. This procedure exactly implements reservoir sampling and guarantees an unbiased estimate of the mean loss
+for that coordinate in the limit. We return the entire vector of means to be used in the main algorithm. Every element of that vector is the estimate of the mean of the coordinate denoted by its
+index, at the current round t.
+ 
+%Describe the ELLIPSOID-SAMPLE PROCEDURE
+\textbf{ELLIPSOID-SAMPLE}
+ELLIPSOIDSAMPLE is where we exploit our knowledge of the adversary (loss surface) by using
+our estimate of the mean. This is a modification of a similar procedure outlined in \citep{abernethy}. The paper referenced proves that this sampling procedure is unbiased and has low variation with respect to the regularization. We choose a point again $y_t$ but its chosen from the endpoints of the principal axes of the Dikin ellipsoid $W_1(x_t)$ centered at $x_t$. Recall that our $x_t$ was constructed to minimize the FTRL loss $\eta \sum_{\tau=1}^T\tilde{f_t^T} +\mathcal{R}$.
+Since the loss minimized was in terms of our estimate of the loss vector, this is where we are
+exploiting our experience with the losses of our coordinates. Furthermore, we update this estimate of $\tilde{f_t}$ at the end of ELLIPSOIDSAMPLE to incorporate our knowledge of the mean $\tilde{\mu_t}$ and our actually loss suffered $f_t$, which is done by adding $f_t$ to 
+$\eta (f_{t}^Ty_t - \tilde{\mu_{t}^T}y_t)\epsilon \lambda_{it}^{\frac{1}{2}}v_{it}$ .\\
+
+The procedure is actually quite simple, but there is a lot of mathematical machinery needed to
+ensure that our sampled point $y_t$ will be in the feasible set and that our ellipsoid sampling
+procedure has nice properties that ensure correctness and efficiency. 
+
+
 \subsection{Partial information setting}
 \subsection{LP relaxations}
