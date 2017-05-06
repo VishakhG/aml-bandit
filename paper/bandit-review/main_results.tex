@@ -67,6 +67,14 @@ The procedure is actually quite simple, but there is a lot of mathematical machi
 ensure that our sampled point $y_t$ will be in the feasible set and that our ellipsoid sampling
 procedure has nice properties that ensure correctness and efficiency. 
 
+\subsubsection{Guarantees}
+\input{bbb_proof.tex}
+
+Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run with
+$\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
+\begin{equation}
+E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
+\end{equation}
 
 \subsection{Partial information setting}
 \subsection{LP relaxations}

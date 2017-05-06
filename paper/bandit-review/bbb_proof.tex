@@ -1,0 +1,99 @@
+We now discuss the main theoretical result of \citep{hazan}
+which is bound on regret in the online convex bandit optimization setting which depneds
+on the total variation of the cost vectors.\\
+
+We first state the bound and then step throught the main steps of reasoning in the proof
+of the bound. The proof is highly technical but we provide some intuition and discussion when
+applicable.\\
+
+The main bound on regret is as follows:
+
+Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run with
+$\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
+\begin{equation}
+E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
+\end{equation}
+
+
+The proof-arguments can be listed as a series of lemmas, which we now go through.
+We use the numbering provided by \citep{hazan} for convience in referencing the main paper.
+
+\textbf{lemma 7}
+For any $u \in \mathcal{K}$
+\begin{equation}
+E[\sum_{t=1}^T f_{t}^T(y_t - u)] \leq E[\sum_{t=1}^T \tilde{f_{t}^T}(x_t - u)] + 2nlog^2(T).
+\end{equation}
+
+This lemma serves to relate the expected regret of Algorithm 1 with the cost vectors
+of an algorithm that plays just $x_t$ and not $y_t$. This relationship is created because
+ultimately we want to bound $\sum_{t-1}^T \tilde{f_t^T}(x_t - u)$  which is what is done with 
+lemma 8. We know that the expectations of $\tilde{t_t}$ and $\tilde{y_t}$ are $f_t$ and $x_t$ 
+and thats why their expected costs can be related per round. The expected number of rounds
+grows as $O(nklog(T))$ which results in the last term $2nlog^2(T)$. 
+
+\textbf{lemma 8}
+For any sequence of cost vectors $\{\tilde{f_1}, ...,\tilde{f_t}\} \in \mathbb{R}^n$
+The FTRL algorithm with a $\mathcal{V}$-self concordant barrier $\mathcal{R}$ has the following
+guarentee: for any $u \in \mathcal{K}$ we have :
+
+\begin{equation}
+\sum_{t=1}^T \tilde{F_{t}^T} (x_t - u) \leq sum_{t=1}^T (x_t - x_{t+1}) + \frac{2}{\eta}\mathcal{V}
+log T
+\end{equation}
+
+This lemma appeasl to standard techniques for bounding the regret of follow-the-leader type algorithms which take advantage of how close $x_t$ and $x_{t+1}$ are.
+
+
+\textbf{lemma 9}
+Let t be an ELLIPSOIDSAMPLE step. Then we have 
+\begin{equation}
+\tilde{f_t^T}(x_t - x{t+1}) \leq 64 \eta n^2 ||f_t - \mu_t ||^2 + 64 \eta n^2 ||\mu_t -\tilde{\mu_t} ||^2 + 2 \mu_t^T (x_t - x_{t+1}) 
+\end{equation} 
+To understand lemma 9, we can turn to the equivalent case for SIMPLEXSAMPLE, where the analysis
+is simpler. If $\tilde{f_t} = 0$ such as in the SIMPLEXSAMPLE case we then have 
+$\tilde{f_t^T}(x_t - x_{t+1} = 0 = 2 \mu_t^T (x_t - x_{t+1}))$ thus for any SIMPLEXSAMPLE step
+we get $\tilde{f_t^T}(x_t - x_{t+1}) \leq 64 \eta n ||f_t - \mu_t ||^2 2\mu_t^T (x_t - x_{t+1})$ \\
+
+If we then call the set of all ELLIPSOIDSAMPLE steps $T_E$ we can sum over time periods.
+When we do so we find components that can be bounded by the above inequalities for SIMPLEXSAMPLE
+which gets us the final form of lemma 9.
+
+\textbf{lemma 10}
+
+\begin{equation}
+\sum_{t=1}^T ||f_t - \mu_t||^2 \leq Q_T
+\end{equation}
+
+This is simply using the properties of the variance of the estimators of the mean
+reward vector $\tilde{\mu}$ when using resevoir sampling.
+
+\textbf{lemma 11}
+\begin{equation}
+E[\sum_{t \in T_E} ||\mu_t - \tilde{\mu_t} ||^2] \leq \frac{log T}{k} Q_T
+\end{equation}
+
+The succesive difference of means in lemma 11 is bounded by the total variation.
+
+\textbf{lemma 12}
+\begin{equation}
+\sum_{t=1}^T \mu_t^T (x_t - x_{t+1}) \leq 2 log(Q_T + 1) + 4
+\end{equation}
+
+We plug in the bounds from lemmas 10 11 12 into the bound from lemma 4 and
+use the value $k=log(T)$ to obtain :
+
+$\sum_{t=1}^T f_t^T (x_t - x_{t+1} \leq 128 \eta^2Q + 4log(Q_T +1))+ 8$ \\
+
+Now we assume that the value of $\eta$ is larger than some value $\frac{\log(Q_t +1)}{8 n^2 Q}$.
+This is so we have an upperbound on $Q_T + 1$ of $8 \eta n^2 Q$. \\
+
+Using lemmas 8 and 7 we can now say for any $u \in \mathcal{K}$  : \\
+
+$E[ \sum_{i=1}^T f_t^T (y_t -y) ] \leq 128 n^2Q + \frac{2 \mathcal{V}}{\eta} logT 
++  2 nlog^2(T) + 4log(Q_T +1) + 8 $
+
+Then choosing a suitable value for $\eta$ recovers the original regret bound.
+
+\begin{equation}
+E[\sum_{t=1}^T f_t^T (y_t - u)] \leq O(n \sqrt{\mathcal{V}Qlog T} + n \mathcal{V} log(T) + nlog^2(T)) . 
+\end{equation}
