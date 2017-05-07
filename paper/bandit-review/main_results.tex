@@ -77,4 +77,8 @@ E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
 \end{equation}
 
 \subsection{Partial information setting}
+As mentioned in the introduction, the authors in \citep{alon} set about exploring how semantic connections in the action set can influence the bandit model. In particular, they argue that similarities between actions can tighten the regret bound of the algorithm. For instance, in the case of website advertising, they hypothesise that if a user clicks on one ad for running shoes, then the user might be susceptible to click on other ads for running shoes. In contrast, if the user is not interested in one pair of running shoes, chances are that the user is not interested in running shoes at all. Thus, there exists a potential for learning something about the category of running shoes. 
+
+By drawing on graph theoretic notions, the authors clervely model these semantic relationships in a directed graph $G_t=(\mathcal{K},D_t)$ where $\mathcal{K}$ is the set of actions and $D_t$ the set of arcs. Let any arc $(i,j)\in D_t$ for $i\not j$ if and only if playing action $i\in\mathcal{K}$ reveals the loss of action $j\in \mathcal{K}$ at time $t$. Recall that the maximum acyclic subgraph in $G$, denoted $\mas(G)$, is the largest subgraph in $G$ with no directed cycles. Then, based on the size of $\mas(G)$, the authors analyse and give regret bounds on a modified version of the Exp3 algorithm.   
+
 \subsection{LP relaxations}
