@@ -70,11 +70,6 @@ procedure has nice properties that ensure correctness and efficiency.
 \subsubsection{Guarantees}
 \input{bbb_proof.tex}
 
-Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run with
-$\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
-\begin{equation}
-E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
-\end{equation}
 
 \subsection{Partial information setting}
 As mentioned in the introduction, the authors in \citep{alon} set about exploring how semantic connections in the action set can influence the bandit model. In particular, they argue that similarities between actions can tighten the regret bound of the algorithm. For instance, in the case of website advertising, they hypothesise that if a user clicks on one ad for running shoes, then the user might be susceptible to click on other ads for running shoes. In contrast, if the user is not interested in one pair of running shoes, chances are that the user is not interested in running shoes at all. Thus, there exists a potential for learning something about the category of running shoes. 
