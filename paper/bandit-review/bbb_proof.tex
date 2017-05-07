@@ -1,99 +1,87 @@
-We now discuss the main theoretical result of \citep{hazan}
-which is bound on regret in the online convex bandit optimization setting which depneds
-on the total variation of the cost vectors.\\
+We now discuss the main theoretical result of \citep{hazan} which consists of providing a bound on regret in terms of the total variation of the cost vectors. Recall that this bound applies
+in the problem setting of oblivious adversarial bandits. Particularly we are in the regime where the coordinates (arms) are not  required to be on the simplex which is known as  online bandit convex optimization.
 
-We first state the bound and then step throught the main steps of reasoning in the proof
-of the bound. The proof is highly technical but we provide some intuition and discussion when
-applicable.\\
+The main bound on regret is as follows: Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run using $\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
 
-The main bound on regret is as follows:
-
-Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run with
-$\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
+Then we have the following bound on regret:
 \begin{equation}
-E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
+  E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
 \end{equation}
 
+The assumed upperbound on $Q$ is just to simplify the exposition and is not required to carry out the proof as is shown in the paper. The main series of arguments made to demonstrate the bound can be listed as a series of Lemmas, which we now go through. We use the numbering provided by \citep{hazan} for convience in referencing the main paper. Our goal is to state the arguments in the 
+order presented by \citep{hazan} and provide extra exposition when nessesary. We prefer to provide context and intution for the arguments rather than simply state the technical arguments which
+can be seen in full in \citep{hazan}.
 
-The proof-arguments can be listed as a series of lemmas, which we now go through.
-We use the numbering provided by \citep{hazan} for convience in referencing the main paper.
-
-\textbf{lemma 7}
+\textbf{Lemma 7}
 For any $u \in \mathcal{K}$
 \begin{equation}
-E[\sum_{t=1}^T f_{t}^T(y_t - u)] \leq E[\sum_{t=1}^T \tilde{f_{t}^T}(x_t - u)] + 2nlog^2(T).
+  E[\sum_{t=1}^T f_{t}^T(y_t - u)] \leq E[\sum_{t=1}^T \tilde{f_{t}^T}(x_t - u)] + 2nlog^2(T).
 \end{equation}
 
-This lemma serves to relate the expected regret of Algorithm 1 with the cost vectors
-of an algorithm that plays just $x_t$ and not $y_t$. This relationship is created because
-ultimately we want to bound $\sum_{t-1}^T \tilde{f_t^T}(x_t - u)$  which is what is done with 
-lemma 8. We know that the expectations of $\tilde{t_t}$ and $\tilde{y_t}$ are $f_t$ and $x_t$ 
-and thats why their expected costs can be related per round. The expected number of rounds
-grows as $O(nklog(T))$ which results in the last term $2nlog^2(T)$. 
+This Lemma serves to relate the expected regret of Algorithm 1 with the cost vectors of another algorithm that plays just $x_t$ and not the poin $y_t$ as derived from $x_t$. This relationship is created because ultimately we want to bound $\sum_{t-1}^T \tilde{f_t^T}(x_t - u)$ and the above equation links the key quantities. Further we know that the expectations of $\tilde{t_t}$ and $\tilde{y_t}$ are $f_t$ and $x_t$ respectively and which is why their expected costs can be related per round as we do here. The expected number of rounds grows as $O(nklog(T))$ which explains the last term in the expression: $2nlog^2(T)$. We now go on to take advantage of this formulated relationship by employing typical proof techniques used in FTRL type algorithms.
 
-\textbf{lemma 8}
+\textbf{Lemma 8}
 For any sequence of cost vectors $\{\tilde{f_1}, ...,\tilde{f_t}\} \in \mathbb{R}^n$
 The FTRL algorithm with a $\mathcal{V}$-self concordant barrier $\mathcal{R}$ has the following
-guarentee: for any $u \in \mathcal{K}$ we have :
+guarantee: for any $u \in \mathcal{K}$ we have:
 
 \begin{equation}
-\sum_{t=1}^T \tilde{F_{t}^T} (x_t - u) \leq sum_{t=1}^T (x_t - x_{t+1}) + \frac{2}{\eta}\mathcal{V}
-log T
+  \sum_{t=1}^T \tilde{F_{t}^T} (x_t - u) \leq sum_{t=1}^T (x_t - x_{t+1}) + \frac{2}{\eta}\mathcal{V}  log T
 \end{equation}
 
-This lemma appeasl to standard techniques for bounding the regret of follow-the-leader type algorithms which take advantage of how close $x_t$ and $x_{t+1}$ are.
+This statement appeals to a commonly used technique of bounding a FTRL type algorithm by how close the succesive values of the $x-t - x_{t+1}$s are. 
+Now we attempt to make some formal statements of how the bound is affected by the different types of sampling procedures, namely ELLIPSOIDSMAPLE of ELLIPSOIDSAMPLE.
 
-
-\textbf{lemma 9}
+\textbf{Lemma 9}
 Let t be an ELLIPSOIDSAMPLE step. Then we have 
 \begin{equation}
-\tilde{f_t^T}(x_t - x{t+1}) \leq 64 \eta n^2 ||f_t - \mu_t ||^2 + 64 \eta n^2 ||\mu_t -\tilde{\mu_t} ||^2 + 2 \mu_t^T (x_t - x_{t+1}) 
+  \tilde{f_t^T}(x_t - x{t+1}) \leq 64 \eta n^2 ||f_t - \mu_t ||^2 + 64 \eta n^2 ||\mu_t -\tilde{\mu_t} ||^2 + 2 \mu_t^T (x_t - x_{t+1}) 
 \end{equation} 
-To understand lemma 9, we can turn to the equivalent case for SIMPLEXSAMPLE, where the analysis
-is simpler. If $\tilde{f_t} = 0$ such as in the SIMPLEXSAMPLE case we then have 
-$\tilde{f_t^T}(x_t - x_{t+1} = 0 = 2 \mu_t^T (x_t - x_{t+1}))$ thus for any SIMPLEXSAMPLE step
-we get $\tilde{f_t^T}(x_t - x_{t+1}) \leq 64 \eta n ||f_t - \mu_t ||^2 2\mu_t^T (x_t - x_{t+1})$ \\
 
-If we then call the set of all ELLIPSOIDSAMPLE steps $T_E$ we can sum over time periods.
-When we do so we find components that can be bounded by the above inequalities for SIMPLEXSAMPLE
-which gets us the final form of lemma 9.
+To understand Lemma 9, we can turn to the equivalent case for SIMPLEXSAMPLE, where the analysis
+is simpler and then fill in anything that would be different in the more complex case of an ELLIPSOIDSAMPLE. We know that in a SIMPLEXSAMPLE $\tilde{f_t} = 0$ so then the following must be true: 
+$\tilde{f_t^T}(x_t - x_{t+1} = 0 = 2 \mu_t^T (x_t - x_{t+1}))$. Thus for any SIMPLEXSAMPLE step we get $\tilde{f_t^T}(x_t - x_{t+1}) \leq 64 \eta n ||f_t - \mu_t ||^2 2\mu_t^T (x_t - x_{t+1})$ \\
 
-\textbf{lemma 10}
+If we then call the set of all ELLIPSOIDSAMPLE steps $T_E$ we can sum over time periods. When we do so we find components that can be bounded by the above inequalities for SIMPLEXSAMPLE which gets us the final form of Lemma 9.
 
+Now we use some facts about our sampling procedures and how they affect the learning guarentees.
+
+\textbf{Lemma 10}
 \begin{equation}
-\sum_{t=1}^T ||f_t - \mu_t||^2 \leq Q_T
+  \sum_{t=1}^T ||f_t - \mu_t||^2 \leq Q_T
 \end{equation}
 
-This is simply using the properties of the variance of the estimators of the mean
-reward vector $\tilde{\mu}$ when using resevoir sampling.
+This is simply using the properties of the variance of the estimators of the mean reward vector $\tilde{\mu}$ when using resevoir sampling which is known by \citep{vitter}.
+Now we finally introduce total variation into our bounds by recognizing the following upperbound exists in the equalities shown so far.
 
-\textbf{lemma 11}
+\textbf{Lemma 11}
 \begin{equation}
-E[\sum_{t \in T_E} ||\mu_t - \tilde{\mu_t} ||^2] \leq \frac{log T}{k} Q_T
+  E[\sum_{t \in T_E} ||\mu_t - \tilde{\mu_t} ||^2] \leq \frac{log T}{k} Q_T
 \end{equation}
 
-The succesive difference of means in lemma 11 is bounded by the total variation.
+This step simply upperbounds the  succesive difference of means seen in  Lemma 11 by the total variation. 
+We now get into some messier terrain where we set our hyperparameters to optimal values such that the bound becomes more interpretable and tighter.
 
-\textbf{lemma 12}
+\textbf{Lemma 12}
 \begin{equation}
-\sum_{t=1}^T \mu_t^T (x_t - x_{t+1}) \leq 2 log(Q_T + 1) + 4
+  \sum_{t=1}^T \mu_t^T (x_t - x_{t+1}) \leq 2 log(Q_T + 1) + 4
 \end{equation}
 
-We plug in the bounds from lemmas 10 11 12 into the bound from lemma 4 and
-use the value $k=log(T)$ to obtain :
+The first such optimal value we insert is for the resevoir size $k$ where we plug in the bounds from lemmas 10 11 12 into the bound from Lemma 4 and use the value $k=log(T)$ to obtain the simpler expression:\\
 
 $\sum_{t=1}^T f_t^T (x_t - x_{t+1} \leq 128 \eta^2Q + 4log(Q_T +1))+ 8$ \\
 
-Now we assume that the value of $\eta$ is larger than some value $\frac{\log(Q_t +1)}{8 n^2 Q}$.
-This is so we have an upperbound on $Q_T + 1$ of $8 \eta n^2 Q$. \\
+Next we do something similar with our value of the exploration-exploitation tradeoff paramter $\eta$. 
+
+Assume that the value of $\eta$ is larger than some value $\frac{\log(Q_t +1)}{8 n^2 Q}$ using this assumption (which we are ultimately in control of since $\eta$ is a hyperparameter that we can choose). Using this assumption gives us the following upperbound on total variation  $Q_T + 1 \leq 8 \eta n^2 Q$. \\
 
 Using lemmas 8 and 7 we can now say for any $u \in \mathcal{K}$  : \\
 
 $E[ \sum_{i=1}^T f_t^T (y_t -y) ] \leq 128 n^2Q + \frac{2 \mathcal{V}}{\eta} logT 
 +  2 nlog^2(T) + 4log(Q_T +1) + 8 $
 
-Then choosing a suitable value for $\eta$ recovers the original regret bound.
+Then choosing a suitable value for $\eta$ that respects the assumption we made earlier about its value then recovers the original regret bound.
 
 \begin{equation}
-E[\sum_{t=1}^T f_t^T (y_t - u)] \leq O(n \sqrt{\mathcal{V}Qlog T} + n \mathcal{V} log(T) + nlog^2(T)) . 
+  E[\sum_{t=1}^T f_t^T (y_t - u)] \leq O(n \sqrt{\mathcal{V}Qlog T} + n \mathcal{V} log(T) + nlog^2(T)) . 
 \end{equation}
