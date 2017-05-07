@@ -10,5 +10,5 @@ lv_bsets.pdf
 *.fdb_latexmk 
 *.synctex.gz
 *.DS_Store
-*.el
+**.el
 *.pdf
