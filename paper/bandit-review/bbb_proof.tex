@@ -1,7 +1,8 @@
 We now discuss the main theoretical result of \citep{hazan} which consists of providing a bound on regret in terms of the total variation of the cost vectors. Recall that this bound applies
-in the problem setting of oblivious adversarial bandits. Particularly we are in the regime where the coordinates (arms) are not  required to be on the simplex which is known as  online bandit convex optimization.
+in the problem setting of oblivious adversarial bandits. Particularly we are in the regime where the points $x_t \in \mathcal{K}$ where $\mathcal{K} \in \mathbb{R}$ is a compact 
+convex set.
 
-The main bound on regret is as follows: Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run using $\eta = min{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}}$
+The main bound on regret is as follows: Let Q be an estimated upperbound on Q, suppose now that Algorithm 1 is run using $\eta = min\{\sqrt{\frac{log T}{\eta Q}}, \frac{1}{25n}\}$
 
 Then we have the following bound on regret:
 \begin{equation}
@@ -29,10 +30,10 @@ guarantee: for any $u \in \mathcal{K}$ we have:
   \sum_{t=1}^T \tilde{F_{t}^T} (x_t - u) \leq sum_{t=1}^T (x_t - x_{t+1}) + \frac{2}{\eta}\mathcal{V}  log T
 \end{equation}
 
-This statement appeals to a commonly used technique of bounding a FTRL type algorithm by how close the succesive values of the $x-t - x_{t+1}$s are. 
-Now we attempt to make some formal statements of how the bound is affected by the different types of sampling procedures, namely ELLIPSOIDSMAPLE of ELLIPSOIDSAMPLE.
+This statement appeals to a commonly used technique of bounding a FTRL type algorithm by how close the succesive values of the $x_t, x_{t+1}$s are. 
+Now we attempt to make some formal statements of how the bound is affected by the different types of sampling procedures, namely ELLIPSOIDSMAPLE or SIMPLEXSAMPLE.
 
-\textbf{Lemma 9}
+\textbf{Lemma 9:} \\
 Let t be an ELLIPSOIDSAMPLE step. Then we have 
 \begin{equation}
   \tilde{f_t^T}(x_t - x{t+1}) \leq 64 \eta n^2 ||f_t - \mu_t ||^2 + 64 \eta n^2 ||\mu_t -\tilde{\mu_t} ||^2 + 2 \mu_t^T (x_t - x_{t+1}) 
@@ -40,7 +41,7 @@ Let t be an ELLIPSOIDSAMPLE step. Then we have
 
 To understand Lemma 9, we can turn to the equivalent case for SIMPLEXSAMPLE, where the analysis
 is simpler and then fill in anything that would be different in the more complex case of an ELLIPSOIDSAMPLE. We know that in a SIMPLEXSAMPLE $\tilde{f_t} = 0$ so then the following must be true: 
-$\tilde{f_t^T}(x_t - x_{t+1} = 0 = 2 \mu_t^T (x_t - x_{t+1}))$. Thus for any SIMPLEXSAMPLE step we get $\tilde{f_t^T}(x_t - x_{t+1}) \leq 64 \eta n ||f_t - \mu_t ||^2 2\mu_t^T (x_t - x_{t+1})$ \\
+$\tilde{f_t^T}(x_t - x_{t+1})= 0 = 2 \mu_t^T (x_t - x_{t+1})$. Thus for any SIMPLEXSAMPLE step we get $\tilde{f_t^T}(x_t - x_{t+1}) \leq 64 \eta n ||f_t - \mu_t ||^2 2\mu_t^T (x_t - x_{t+1})$ \\
 
 If we then call the set of all ELLIPSOIDSAMPLE steps $T_E$ we can sum over time periods. When we do so we find components that can be bounded by the above inequalities for SIMPLEXSAMPLE which gets us the final form of Lemma 9.
 
@@ -67,7 +68,7 @@ We now get into some messier terrain where we set our hyperparameters to optimal
   \sum_{t=1}^T \mu_t^T (x_t - x_{t+1}) \leq 2 log(Q_T + 1) + 4
 \end{equation}
 
-The first such optimal value we insert is for the resevoir size $k$ where we plug in the bounds from lemmas 10 11 12 into the bound from Lemma 4 and use the value $k=log(T)$ to obtain the simpler expression:\\
+The first such optimal value we insert is for the resevoir size $k$ where we plug in the bounds from lemmas 10, 11, and 12 into the bound from Lemma 4 and use the value $k=log(T)$ to obtain the simpler expression:
 
 $\sum_{t=1}^T f_t^T (x_t - x_{t+1} \leq 128 \eta^2Q + 4log(Q_T +1))+ 8$ \\
 
@@ -75,7 +76,7 @@ Next we do something similar with our value of the exploration-exploitation trad
 
 Assume that the value of $\eta$ is larger than some value $\frac{\log(Q_t +1)}{8 n^2 Q}$ using this assumption (which we are ultimately in control of since $\eta$ is a hyperparameter that we can choose). Using this assumption gives us the following upperbound on total variation  $Q_T + 1 \leq 8 \eta n^2 Q$. \\
 
-Using lemmas 8 and 7 we can now say for any $u \in \mathcal{K}$  : \\
+Using lemmas 8 and 7 we can now say for any $u \in \mathcal{K}$: 
 
 $E[ \sum_{i=1}^T f_t^T (y_t -y) ] \leq 128 n^2Q + \frac{2 \mathcal{V}}{\eta} logT 
 +  2 nlog^2(T) + 4log(Q_T +1) + 8 $

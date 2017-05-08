@@ -4,11 +4,11 @@ With the problem areas well-defined, this section compiles the conceptual ideas 
 \subsection{Feedback System}
 As mentioned in the introduction, the authors in \citep{alon} set about exploring how semantic connections in the action set can influence the bandit model. Motivated by the example of web advertising in particular, they argue that similarities between actions can strengthen the regret bound of the bandit algorithm, because such similarities can reveal information about the losses of other actions. 
 
-The authors clervely model the semantic relationships in a \textit{feedback graph} $G_t=(\mathcal{K},D_t)$ where $\mathcal{K}$ is the set of actions and $D_t$ the set of arcs. Let any arc $(i,j)\in D_t$ for $i\not=j$ if and only if playing action $i\in\mathcal{K}$ reveals the loss of action $j\in \mathcal{K}$ at time $t$. We write $i\overset{t}{\to}j$. The full information setting then corresponds to a complete graph; the bandit setting, an empty graph. Furthermore, any subgraph in between represents the partial information setting which interpolates between the expert and the bandit setting. In order to prove guarantees in this scenario, the authors examine some graph theoretic notions including \textit{independence numbers}, \textit{dominating sets}, and \textit{maximum acyclic graphs}. Recall that the independence number, $\alpha(G)$, is the cardinality of the maximal subset $T\subset \mathcal{K}$ such that no two $i,j\in T$ are connected by an edge; that is $(i,j)\not\in D_t$. An independent set $T$ is maximal if no proper superset of $T$ forms an independent set. Moreover, $R\subset G$ is a dominating set if for any $j\not\in R$ there exists an $i\in R$ that exhibits a directed edge to $j$. Lastly, the maximum acyclic subgraph in $G$, denoted $\mas(G)$, is the largest subgraph with no directed cycles. 
+The authors cleverly model the semantic relationships in a \textit{feedback graph} $G_t=(\mathcal{K},D_t)$ where $\mathcal{K}$ is the set of actions and $D_t$ the set of arcs. Let any arc $(i,j)\in D_t$ for $i\not=j$ if and only if playing action $i\in\mathcal{K}$ reveals the loss of action $j\in \mathcal{K}$ at time $t$. We write $i\overset{t}{\to}j$. The full information setting then corresponds to a complete graph; the bandit setting, an empty graph. Furthermore, any sub-graph in between represents the partial information setting which interpolates between the expert and the bandit setting. In order to prove guarantees in this scenario, the authors examine some graph theoretic notions including \textit{independence numbers}, \textit{dominating sets}, and \textit{maximum acyclic graphs}. Recall that the independence number, $\alpha(G)$, is the cardinality of the maximal subset $T\subset \mathcal{K}$ such that no two $i,j\in T$ are connected by an edge; that is $(i,j)\not\in D_t$. An independent set $T$ is maximal if no proper superset of $T$ forms an independent set. Moreover, $R\subset G$ is a dominating set if for any $j\not\in R$ there exists an $i\in R$ that exhibits a directed edge to $j$. Lastly, the maximum acyclic subgraph in $G$, denoted $\mas(G)$, is the largest subgraph with no directed cycles. 
 
 The authors then distinguish between the \textit{informed} and \textit{uninformed} setting. In the informed setting the feedback graph is known to the learner in advance of deciding which action to take; in the uninformed setting, only after an action has been taken. Moreover, in each scenario, it is useful to distinguish between the \textit{undirected} and the \textit{directed} case as the regret bounds vary with these. 
 
-Based on these formal structures, the authors analyse and give regret bounds on modified versions of the Exp3 algorithm. A key concept in their analysis is the central quantity\footnote{In the paper they denote it as $Q_t$ but due to conflict with \citep{hazan} we rewrite it as $V_t$.}:
+Based on these formal structures, the authors analyze and give regret bounds on modified versions of the Exp3 algorithm. A key concept in their analysis is the central quantity\footnote{In the paper they denote it as $Q_t$ but due to conflict with \citep{hazan} we rewrite it as $V_t$.}:
 
 \begin{align}\label{alon:foundation}
 	V_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}},
@@ -52,9 +52,9 @@ The following lemma links $V_t$ with $\mas(G_t)$
 
 The lemma's proof is included here as it shows how to connect the graph theoretic property $\mas(G_t)$ with the central sum $V_t$. 
 \begin{proof}
-	Let $N_i^-$ be the set of vertices such that $j\in N_i^-$ iff $j\to i$. $N_i^-$ is the in-neighbourhood of $i$. The lemma is proved by adding elements to an initially empty set $V'$. Let 
+	Let $N_i^-$ be the set of vertices such that $j\in N_i^-$ iff $j\to i$. $N_i^-$ is the in-neighborhood of $i$. The lemma is proved by adding elements to an initially empty set $V'$. Let 
 	$$\Phi_0=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{p_i+\sum_{j:j\to i}p_j}$$
-	and let $i_1$ be the vertex that minimises $p_i+\sum_{j\in N_i^-}$ over $i\in V$. Now delete $i_1$, $N_{i_1}^-$ and all edges incident to these vertices from $G$. Let $N_{i,1}^-$ be the in-neighbourhoods after the first step. Note that the contribution of all the deleted vertices to $\Phi_0$ is 
+	and let $i_1$ be the vertex that minimizes $p_i+\sum_{j\in N_i^-}$ over $i\in V$. Now delete $i_1$, $N_{i_1}^-$ and all edges incident to these vertices from $G$. Let $N_{i,1}^-$ be the in-neighborhoods after the first step. Note that the contribution of all the deleted vertices to $\Phi_0$ is 
 	\begin{align*}
 		&\sum_{r\in N_{i_1}^-\cup\{i_1\}}\frac{p_r}{p_r+\sum_{j\in N_r^-}p_j}\\
 		&\:\:\leq \sum_{r\in N_{i_1}^-\cup\{i_1\}}\frac{p_r}{p_{i_1}+\sum_{j\in N_{i_1}^-}p_j}=1,
@@ -92,9 +92,9 @@ While these proofs show the gist of the ideas in the paper, the authors move on 
 
 
 \subsection{Total Variation}
-The paper by \citep{hazan} introduces the very ineresting notion of bounding
+The paper by \citep{hazan} introduces the very interesting notion of bounding
 the regret of an agent in the bandit setting by the total variation of the reward vector 
-that agent recieves, we discuss the primary conceptual ideas present in the paper here. \\
+that agent receives, we discuss the primary conceptual ideas present in the paper here. \\
 
 \textbf{Intuition:}
 The premise of this paper is that it should be easier to learn in a setting where
@@ -102,18 +102,18 @@ rewards change very little than in the setting where rewards are wildly variable
 The typical bounds for adversarial bandits don't take this into account and thus assume implicitly the 
 worst of the adversary. In many natural settings, however, the losses won't be as adversarial as they could be. For
 instance if you are planning a route to travel into work, the traffic may be unpredictable in general, but there 
-are certain things that can be exploited, like correlations with congestion and time of day for instance.\\
+are certain things that can be exploited, like correlations with congestion and time of day for instance.
 
-\textbf{Total Variation and resevoir sampling}
+\textbf{Total Variation and reservoir sampling}
 Taking this point of view, we first need a formal definition of variation to use.  \citep{hazan} uses the
 \textit{quadratic variation} of the loss vectors which is defined as $Q_T := \sum_{t=1}^T || f_t - \mu ||^2$,
 where $f_t$ is the cost vector at time $t$ and $\mu$ is the mean of all the cost vectors
-$\mu = \sum_{t=1}^T f_t$. \\
+$\mu = \sum_{t=1}^T f_t$. 
 
 This is a good  way to talk about how unpredictable the losses assigned by our adversary are and allows us to bound the
 regret by this level of variability. The bounds given in the paper are of the form
-$\tilde{O}(\sqrt{Q})$ where $\tilde{O}$ is an upperbound which ignores $poly(log(T))$ factors
-particular to the problem setting. \\
+$\tilde{O}(\sqrt{Q})$ where $\tilde{O}$ is an upper bound which ignores $poly(log(T))$ factors
+particular to the problem setting. 
 
 Though we now have a way of formalizing the degree to which our losses are adversarial its still unclear
 how to integrate the concept into the problem setting. The solution that \citep{hazan} gives for this is two-fold
@@ -126,8 +126,8 @@ how to integrate the concept into the problem setting. The solution that \citep{
 \end{enumerate}
 
 The first step involves always keeping an unbiased estimate of the mean of each component (arm) of 
-the reward vector. This is done using a technique known as resevoir sampling.
-For each coordinate $i\in[n]$ we keep a vector of arbritrary size (hyper-parameter) and call it the resevoir $S_{i, k}$ of size $k$.
+the reward vector. This is done using a technique known as reservoir sampling.
+For each coordinate $i\in[n]$ we keep a vector of arbitrary size (hyper-parameter) and call it the reservoir $S_{i, k}$ of size $k$.
 The estimator of the mean $\tilde{\mu_t(i)}$ is then  $\tilde{\mu}(i) \frac{i}{k} \ sum_{j=1}^kS_{i, j}$. 
 \citep{hazan} show that this is an unbiased estimator for the mean of each component.\\
 
@@ -135,7 +135,7 @@ The estimator of the mean $\tilde{\mu_t(i)}$ is then  $\tilde{\mu}(i) \frac{i}{k
 \textbf{algorithm overview:}
 At a high level, the main algorithm is follow-the-regularized-leader (FTRL) with a particular
 sort of regularization  $\mathcal{R}(x)$ enforced by \textit{self concordant barrier functions}. This means we want our next sampled point 
-to minimize:  $x_t  argmin_{K}[\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}^T} + \mathcal{R}(x)]$ where $\eta$ is a learning rate. \\
+to minimize:  $x_t  argmin_{K}[\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}^T} + \mathcal{R}(x)]$ where $\eta$ is a learning rate. 
 
 \textbf{self-concordant barriers:}
 We now go into the mathematical tools used in the paper based on the idea of self-concordant-barriers. To do this we need a few definitions and results.\\
@@ -174,11 +174,11 @@ The main algorithm consists of two steps
   ELLIPSOIDSAMPLE
 \end{enumerate}
 
-SIMPLEXSAMPLE does the resevoir sampling and maintains the estimator of the reward vector
+SIMPLEXSAMPLE does the reservoir sampling and maintains the estimator of the reward vector
 $f_t$. 
 
 ELLIPSOIDSAMPLE randomly chooses an actual point $y_t$ from the endpoints of the
 principle axes of the Dikin ellipsoid $W_1(x)$ centered at $x_t$. Due to the definitions and 
 results above, we know that this sample is in the feasible set of points. Furthermore its been shown in \citep{abernethy} that the sampling is unbiased and has low variation.
 The  $\tilde{\mu_t}$ that is calculated in SIMPLEXSAMPLE is incorporated in ELLIPSOIDSAMPLE for smarter exploration which allows regret bounds based on the total
-variation. 
+variation.  
