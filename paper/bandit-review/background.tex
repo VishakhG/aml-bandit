@@ -92,79 +92,57 @@ While these proofs show the gist of the ideas in the paper, the authors move on 
 
 
 \subsection{Total Variation}
-The paper by \citep{hazan} introduces the very interesting notion of bounding
-the regret of an agent in the bandit setting by the total variation of the reward vector 
-that agent receives, we discuss the primary conceptual ideas present in the paper here. \\
+The paper by \citep{hazan} introduces the notion of bounding the regret of a learner by the total variation of the loss vector ${\bf f}=\{{\bf f}_1,...,{\bf f}_T\}$ in the bandit optimisation setting. Intuitively, it should be easier to learn in a setting where the change in rewards very little compared to a lot. Since typical bounds for adversarial bandits don't take this into account and, instead, implicitly assume the worst of the adversary those bounds, argue the authors, are not realistic. As mentioned in the introduction, for instance, if you are planning a route to travel into work, the traffic may be unpredictable in general, yet there certain things can be exploited such as correlations between congestion and time of day.
 
-\textbf{Intuition:}
-The premise of this paper is that it should be easier to learn in a setting where
-rewards change very little than in the setting where rewards are wildly variable. 
-The typical bounds for adversarial bandits don't take this into account and thus assume implicitly the 
-worst of the adversary. In many natural settings, however, the losses won't be as adversarial as they could be. For
-instance if you are planning a route to travel into work, the traffic may be unpredictable in general, but there 
-are certain things that can be exploited, like correlations with congestion and time of day for instance.
+From this point of view \citep{hazan} uses the \textit{quadratic variation} of the loss vectors defined as $Q_T = \sum_{t=1}^T || f_t - \mu ||^2$, where $f_t$ is the cost vector at time $t$ and $\mu$ is the mean of all the cost vectors $\mu = \sum_{t=1}^T f_t$. 
 
-\textbf{Total Variation and reservoir sampling}
-Taking this point of view, we first need a formal definition of variation to use.  \citep{hazan} uses the
-\textit{quadratic variation} of the loss vectors which is defined as $Q_T := \sum_{t=1}^T || f_t - \mu ||^2$,
-where $f_t$ is the cost vector at time $t$ and $\mu$ is the mean of all the cost vectors
-$\mu = \sum_{t=1}^T f_t$. 
-
-This is a good  way to talk about how unpredictable the losses assigned by our adversary are and allows us to bound the
-regret by this level of variability. The bounds given in the paper are of the form
-$\tilde{O}(\sqrt{Q})$ where $\tilde{O}$ is an upper bound which ignores $poly(log(T))$ factors
-particular to the problem setting. 
-
-Though we now have a way of formalizing the degree to which our losses are adversarial its still unclear
-how to integrate the concept into the problem setting. The solution that \citep{hazan} gives for this is two-fold
+This quantity provides a useful measure of the unpredictability of the losses assigned by our adversary and, as will be shown, appears in the bound of the regret. While the idea of a bound by variation seems conceptually straight forward, it is unclear how to integrate it into the problem setting. The gist of the paper revolves around this integration and the authors' solution is two-fold:
 
 \begin{enumerate}
-\item
-  Model the mean to each component in an unbiased way to keep a tracking estimator of the reward vector 
-\item
-  sample a new point taking advantage of the knowledge of the old means of each component ($\tilde{\mu}$).
+	\item model the mean loss of each action ${\bf x}_t \in \mathcal{K}$ in an unbiased way to keep a tracking estimator of the loss vector; and 
+	\item sample a new point taking advantage of the knowledge of the old means of each action, $\tilde{\mu}$.
 \end{enumerate}
 
-The first step involves always keeping an unbiased estimate of the mean of each component (arm) of 
-the reward vector. This is done using a technique known as reservoir sampling.
-For each coordinate $i\in[n]$ we keep a vector of arbitrary size (hyper-parameter) and call it the reservoir $S_{i, k}$ of size $k$.
-The estimator of the mean $\tilde{\mu_t(i)}$ is then  $\tilde{\mu}(i) \frac{i}{k} \ sum_{j=1}^kS_{i, j}$. 
-\citep{hazan} show that this is an unbiased estimator for the mean of each component.\\
+With respect to the first part, the estimator is kept and updated using a technique known as \textit{reservoir sampling}. For each coordinate $i\in[1,...,n]$ of the simplex $\mathcal{K}$ we keep a vector of arbitrary size $k$ and denote it as the reservoir $S_{i, k}$. The estimator of the mean $\tilde{\mu_t}(i)$  then becomes $\tilde{\mu}(i) = \frac{i}{k} \sum_{j=1}^kS_{i, j}$. The authors' show that each resevoir gives an unbiased estimator for all $i\in[1,...,n]$.
 
+With the resevoir method in place, the authors present an algorithm based on \textit{follow-the-regularized-leader} (FTRL) with a particular regularisation $\mathcal{R}(x)$ enforced by \textit{self-concordant barriers}. This means that any sampled point should
+minimize: $\argmin_{{\bf x}_t\in\mathcal{K}}\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}}^T + \mathcal{R}(x)$ where $\eta$ is a learning rate. 
 
-\textbf{algorithm overview:}
-At a high level, the main algorithm is follow-the-regularized-leader (FTRL) with a particular
-sort of regularization  $\mathcal{R}(x)$ enforced by \textit{self concordant barrier functions}. This means we want our next sampled point 
-to minimize:  $x_t  argmin_{K}[\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}^T} + \mathcal{R}(x)]$ where $\eta$ is a learning rate. 
+In order to understand self-concordant barriers, some definitions are needed.
 
-\textbf{self-concordant barriers:}
-We now go into the mathematical tools used in the paper based on the idea of self-concordant-barriers. To do this we need a few definitions and results.\\
+\begin{definition}
+	A convex function $\mathcal{R}({\bf x})$ defined on the interior of the convex compact set $\mathcal{K}$ and having three continuous derivatives is said to be a $\mathcal{V}$-concordant barrier if the following conditions hold:
 
-A convex function $\mathcal{R}(x)$,  defined on the interior of the convex compact set $K$ and having three continuous derivatives is said to be a $\mathcal{V}$ concordant barrier if the following 
-conditions hold:
+	\begin{enumerate}
+		\item $\mathcal{R}({\bf x}_i) \rightarrow \infty$ along every sequence of points $x_i$ in the interior of $\mathcal{K}$ converges to a boundary point of $\mathcal{K}$.
 
-\begin{enumerate}
-\item
-  $\mathcal{R}(x_i) \rightarrow \infty$ along every sequence of points $x_i$ in the interior of $\mathcal{K}$ converges to a boundary point of $\mathcal{K}$.
+		\item $\mathcal{R}$ satisfies 
+		\begin{align*}
+			|\nabla^3 \mathcal{R}({\bf x}) [{\bf h}, {\bf h}, {\bf h}]| &\leq 2({\bf h}^\top \big[\nabla^2 \mathcal{R}({\bf x})]{\bf h})^{\frac{3}{2}},\\
+			|\nabla \mathcal{R}({\bf x})^\top {\bf h}| &\leq \mathcal{V}^{\frac{1}{2}}[{\bf h}^\top \nabla^2 \mathcal{R}({\bf x}) {\bf h}]^\frac{1}{2}
+		\end{align*}
+	\end{enumerate}
+\end{definition}
 
-\item
-$\mathcal{R}$ satisfies $|\nabla^3 \mathcal{R}(x) [h, h, h]| \leq 2(h^T [\nabla^2 \mathcal{R}(x)]h)^{\frac{3}{2}}$ and $|\nabla \mathcal(R)(x)^T h| \leq \mathcal{V}^{\frac{1}{2}}[h^T \nabla^2 \mathcal{R}(x) h]^\frac{1}{2}$
+The self-concordant barrier definition is key in ensuring that when sampling new points, these points remain within the feasible set. In order for this to work completely, however, some more technical machinery is needed.
 
-\end{enumerate}
+\begin{definition}
+	The \textit{Dikin ellipsoid}, is an elipsoid of radius $r$ centered at ${\bf x}$ defined as
+	\begin{align*}
+		W_r({\bf x}) = \{ {\bf y} \in  \mathbb{R}^n : ||{\bf y} - {\bf x}||_{\bf x} \leq r \}.
+	\end{align*}
+\end{definition}
 
-Another mathematical object of interest in the algorithm
-and regret bounds is something called a Dikin ellipsoid.
+Furthermore, the following Minkowsky function definition is needed.
 
-We define Dikin ellipsoid of radius r centered at x to be the set :
-$W_r(x) = \{ y \in  \mathbb{R}^n : (||y - x||)_x \leq r \}$.
+\begin{definition} 
+	For any two distinct points {\bf x} and {\bf y} in the interior of $\mathcal{K}$, the Minkowsky
+	function ${\bf \pi_x(y)}$ on $\mathcal{K}$ is 
+		$${\bf \pi_x(y)} = \inf\{t \geq 0 : {\bf x} + t^{-1}({\bf y - x}) \in \mathcal{K} \}.$$
+\end{definition}
 
-Furthermore For any two distinct points x and y in the interior of $\mathcal{K}$,   the Minkowsky
-function $\pi_x(y)$ on $\mathcal{K}$ is 
+From these definitions it follows that $W_1({\bf x}) \subseteq \mathcal{K} \text{ for any } {\bf x} \in \mathcal{K}$, which allows for sampling in an unbiased way from the feasible set.
 
-$\pi_x(y) = inf \{t \geq 0 : x + t^{-1}(y - x) \in \mathcal{K} \}$
-
-These definitions insinuate that $W_1{x} \subseteq \mathcal{K} \text{ for any } x \in \mathcal{K}$. Which 
-is useful because it allows us  to sample in an unbiased way from the feasible set.
 
 The main algorithm consists of two steps 
 \begin{enumerate}
