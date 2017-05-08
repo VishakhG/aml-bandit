@@ -1,4 +1,4 @@
-\section{Main conceptual Ideas}
+\section{Conceptual and Mathematical Ideas}
 With the problem areas well-defined, this section compiles the conceptual ideas from the papers. Overall, \citep{alon, hazan} presents novel ideas and proof techniques, while \citep{bertsimas} via a simple proof invent a range of LP relaxations for the restless bandit. The latter paper is thus more relevant for applications. Since our focus is mainly theoretical, however, we tone down the findings \citep{bertsimas} in favor of the two other papers.
 
 \subsection{Feedback System}
@@ -148,4 +148,6 @@ The main algorithm consists of two steps: The \textit{SimplexSample} and the \te
 SimplexSample takes care of the reservoir sampling and maintains the estimator of the loss vector
 ${\bf f}_t$. EllipsoidSample randomly chooses an actual point ${\bf y_t}$ from the endpoints of the
 principle axes of the Dikin ellipsoid $W_1({\bf x})$ centered at ${\bf x}_t$. From the definitions above this sample point is in the feasible set of points. Furthermore its been shown in \citep{abernethy} that the sampling is unbiased and has low variation. The $\tilde{\mu_t}$ that is calculated in SimplexSample is then incorporated in EllipsoidSample for smarter exploration which allows regret bounds based on the total
-variation. 
+variation. Refer to section 4 for a discussion of the algorithm.
+
+\input{bbb_proof.tex}

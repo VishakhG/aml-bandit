@@ -1,4 +1,4 @@
-\section{Overview of main results}
+\section{Algorithms}
 
 \subsection{Total variation}
 In this section we take a look at the main results from \citep{hazan}.
@@ -54,9 +54,6 @@ Now we take a look at the SIMPLEXSAMPLE procedure whose job is simply to impleme
 ELLIPSOIDSAMPLE is where we exploit our knowledge of the adversary (loss surface) by using our estimate of the mean. This is a modification of a similar procedure outlined in \citep{abernethy}. \citep{abernethy} manages to  prove that this style of sampling procedure is unbiased and has low variation with respect to the regularization which in this case are our self-concordant functions. We choose a point $y_t$ just like in SIMPLEXSAMPLE but it is  chosen from the endpoints of the principal axes of the Dikin ellipsoid $W_1(x_t)$ centered at $x_t$ this time. Recall that $x_t$ was constructed to minimize the FTRL loss $\eta \sum_{\tau=1}^T\tilde{f_t^T} +\mathcal{R}$. Since the loss minimized was in terms of our \textit{estimate} of the loss vector, this is where we are exploiting our prior knowledge of the losses associated with the coordinates. Furthermore, we update this estimate of $\tilde{f_t}$ at the end of ELLIPSOIDSAMPLE to incorporate our knowledge of the mean $\tilde{\mu_t}$ and our actually loss suffered $f_t$, which is done by adding $f_t$ to  $\eta (f_{t}^Ty_t - \tilde{\mu_{t}^T}y_t)\epsilon \lambda_{it}^{\frac{1}{2}}v_{it}$ .
 
 The procedure is actually quite akin to the exploration-exploitation steps taken in FTRl or EXP3, but there is a lot of mathematical machinery needed to ensure that our sampled point $y_t$ will be in the feasible set and that our ellipsoid sampling procedure has nice properties that ensure correctness and efficiency. 
-
-\subsubsection{Guarantees}
-\input{bbb_proof.tex}
 
 
 \subsection{Partial information setting}
