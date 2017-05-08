@@ -1,33 +1,137 @@
-
 \documentclass{beamer}
-\usetheme{metropolis}           % Use metropolis theme
-\title{Bandit-Problems}
+\usetheme{metropolis}          
+\title{Bandit Problems}
 \date{\today}
 \author{Vishakh Gopu, Frederik Jensen}
 \institute{Advanced machine learning}
 \begin{document}
-  \maketitle
-  \section{Introduction}
+\maketitle
 
- \begin{frame}{Overview}
-   %The strange nesting is just to give an example of a beamer slide layout in
-   %case you havent used it before.
-   
-   \begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Introduction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\section{Introduction}
+\begin{frame}{Overview of papers}   
+  Three main problem settings: 
+  \begin{enumerate}
+  \item
+    Restless bandits
+    \begin{itemize}
     \item
-      \begin{itemize}
+      bertsimas, Dimitris,Nin ̃o-Mora, Jose ́. 2000. Rest- less Bandits, Linear Programming
+      Relaxations, and a
+      Primal-Dual Index Heuristic. Operations Research, 48(1), 80–90.
+    \end{itemize}
+  \item
+    Graph structured feedback
+    \begin{itemize}
+    \item
+      Alon, Noga, Cesa-Bianchi, Nicolo`, Gentile, Claudio, Mannor, Shie, Mansour, Yishay,
+      Shamir, Ohad. 2014. Nonstochastic Multi-Armed Bandits with Graph- Structured Feedback.
+      CoRR, abs/1409.8428.
+    \end{itemize}
+  \item
+    Handling the variance in rewards
+    
+    \begin{itemize}
+    \item
+      Hazan, Elad, Kale, Satyen. 2009. Better Algorithms for Benign Bandits. Pages 38–47 of: 
+      Proceedings of the Twentieth Annual ACM-SIAM Symposium on Discrete Algorithms. SODA ’09.
+      Philadelphia, PA, USA: Society for Industrial and Applied Mathematics.
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
 
-      \item
-       Review of papers analyzing \textit{Bandit Problems}
-      \item
-       Discuss main ideas and concepts 
-      \item
-       Discuss key results and connections
-     \item
-       New analysis/proofs/implementation
-     \item
-       Open questions and future directions
-      \end{itemize}
-    \end{enumerate}
-  \end{frame}
+\begin{frame}{Outline}
+  \begin{enumerate}
+  \item
+    A quick look at restless bandits
+    
+  \item
+    Graph structured feedback and benign bandits in more depth
+    \begin{itemize}
+    \item
+      Problem description
+    \item
+      Selected results
+    \end{itemize}
+    
+  \item
+    Interesting connections and relationships 
+  \item
+    Questions, exploration, future work
+    
+  \end{enumerate}
+\end{frame}
+
+\section{Restless bandits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Restless bandits 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\begin{frame}{Quick overview}
+  % Talk about the problem setting and brief  high level description 
+  % of the result (avoid showing any results)
+  % Mention its in the interest of time
+\end{frame}
+
+\section{Non stochastic bandits with graph structured feedback}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Non stochastic bandits with graph structured feedback
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{frame}{High level overview}
+
+\end{frame} 
+
+\begin{frame}{Problem formulation}
+
+\end{frame}
+
+\begin{frame}{KEY RESULT 1}
+\end{frame}
+
+\begin{frame}{KEY RESULT 2}
+
+\end{frame}
+\section{Better algorithms for benign bandits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Total variation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{frame}{High level overview}
+  % Description, example and why its interesting
+\end{frame}
+\begin{frame}{Problem description}
+  % Describe connections and terminology
+\end{frame}
+\begin{frame}{Algorithm high level}
+  % talk about FTRL + self concordant regularization
+  % Introduce resevoir sampling
+\end{frame}
+\begin{frame}{Resevoir sampling}
+  % Description
+  % python code (1 liner)
+\end{frame}
+
+\begin{frame}{Bound}
+  % describe the bound, why its interesting and what it took to get it to work
+\end{frame}
+\begin{frame}{Connections}
+  \begin{enumerate}
+  \item
+    Letting novel mathematical tools guide the approach
+  \item 
+    Interpolating between problem settings
+  \end{enumerate}
+\end{frame}{Connections}
+
+\section{Conclusion}
+\begin{frame}{Exploration}
+  % talk about the idea we have.
+\end{frame}
+\begin{frame}{Open questions, future work}
+  % Open questons from hazan, future ideas
+\end{frame}
+
+\section{Questions}
 \end{document}

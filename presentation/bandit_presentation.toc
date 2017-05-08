@@ -1,2 +1,7 @@
 \beamer@endinputifotherversion {3.33pt}
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Restless bandits}{5}{0}{2}
+\beamer@sectionintoc {3}{Non stochastic bandits with graph structured feedback}{7}{0}{3}
+\beamer@sectionintoc {4}{Better algorithms for benign bandits}{12}{0}{4}
+\beamer@sectionintoc {5}{Conclusion}{19}{0}{5}
+\beamer@sectionintoc {6}{Questions}{23}{0}{6}
