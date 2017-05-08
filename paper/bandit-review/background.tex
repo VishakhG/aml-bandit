@@ -1,5 +1,97 @@
 \section{Main conceptual Ideas}
-\subsection{Total Variation }
+With the problem areas well-defined, this section compiles the conceptual ideas from the papers. Overall, \citep{alon, hazan} presents novel ideas and proof techniques, while \citep{bertsimas} via a simple proof invent a range of LP relaxations for the restless bandit. The latter paper is thus more relevant for applications. Since our focus is mainly theoretical, however, we tone down the findings \citep{bertsimas} in favor of the two other papers.
+
+\subsection{Feedback System}
+As mentioned in the introduction, the authors in \citep{alon} set about exploring how semantic connections in the action set can influence the bandit model. Motivated by the example of web advertising in particular, they argue that similarities between actions can strengthen the regret bound of the bandit algorithm, because such similarities can reveal information about the losses of other actions. 
+
+The authors clervely model the semantic relationships in a \textit{feedback graph} $G_t=(\mathcal{K},D_t)$ where $\mathcal{K}$ is the set of actions and $D_t$ the set of arcs. Let any arc $(i,j)\in D_t$ for $i\not=j$ if and only if playing action $i\in\mathcal{K}$ reveals the loss of action $j\in \mathcal{K}$ at time $t$. We write $i\overset{t}{\to}j$. The full information setting then corresponds to a complete graph; the bandit setting, an empty graph. Furthermore, any subgraph in between represents the partial information setting which interpolates between the expert and the bandit setting. In order to prove guarantees in this scenario, the authors examine some graph theoretic notions including \textit{independence numbers}, \textit{dominating sets}, and \textit{maximum acyclic graphs}. Recall that the independence number, $\alpha(G)$, is the cardinality of the maximal subset $T\subset \mathcal{K}$ such that no two $i,j\in T$ are connected by an edge; that is $(i,j)\not\in D_t$. An independent set $T$ is maximal if no proper superset of $T$ forms an independent set. Moreover, $R\subset G$ is a dominating set if for any $j\not\in R$ there exists an $i\in R$ that exhibits a directed edge to $j$. Lastly, the maximum acyclic subgraph in $G$, denoted $\mas(G)$, is the largest subgraph with no directed cycles. 
+
+The authors then distinguish between the \textit{informed} and \textit{uninformed} setting. In the informed setting the feedback graph is known to the learner in advance of deciding which action to take; in the uninformed setting, only after an action has been taken. Moreover, in each scenario, it is useful to distinguish between the \textit{undirected} and the \textit{directed} case as the regret bounds vary with these. 
+
+Based on these formal structures, the authors analyse and give regret bounds on modified versions of the Exp3 algorithm. A key concept in their analysis is the central quantity\footnote{In the paper they denote it as $Q_t$ but due to conflict with \citep{hazan} we rewrite it as $V_t$.}:
+
+\begin{align}\label{alon:foundation}
+	V_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}},
+\end{align}
+
+where $p_{i,t}$ is the probability of selecting action $i$ at time $t$, and $q_{i,t}$ is the probability of observing the loss of action. For the uninformed setting, the authors modify the Exp3 algorithm to Exp3-SET to incorporate \label{alon:foundation}, which shows up as a new surrogate loss defined as $\hat{l}_{i,t}=\frac{l_{i,t}}{q_{i,t}}1_{i\in S_{I_t,t}}$. Here, $I_t$ is the action taken at time $t$, and $1$ is the indicator function. Then, they bound the regret by $V_t$ in the following foundational lemma.
+
+\begin{lemma}
+	The regret of Exp3-SET satisfies
+	\begin{align}
+		R_t\leq \frac{\ln |\mathcal{K}|}{\eta} + \frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[V_t].
+	\end{align}
+\end{lemma}
+
+The proof is a straightforward application of the Exp3 proof technique where care is taken to incorporate the new loss definition properly. For the uninformed setting this leads to the regret bound in the directed and undirected setting.
+
+\begin{theorem} \label{alon:undirected}
+	In the asymmetric case, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)\sum_{t=1}^Tm_t}$ with $m_t$ bounding $\mas(G_t)$ for $t=1,...,T$, the regret of Exp3-SET satisfies 
+	\begin{align}
+		R_T\leq \frac{\ln K}{\eta} \leq +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]
+	\end{align}
+\end{theorem} 
+
+An straightforward consequence is the following corollary.
+
+\begin{corollary} \label{alon:corollary}
+	In the symmetric case, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)\sum_{t=1}^T\alpha_t}$ with $\alpha_t$ bounding $\alpha(G_t)$ for $t=1,...,T$, the regret of Exp3-SET satisfies 
+	\begin{align}
+		R_T\leq \frac{\ln K}{\eta} \leq +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\alpha(G_t)].
+	\end{align}
+\end{corollary}
+
+The following lemma links $V_t$ with $\mas(G_t)$
+
+\begin{lemma}
+	Let $G=(V,D)$ be a directed graph with vertex set $V=\{1,...,|\mathcal{K}|\}$ and arc set $D$. Then for any distribution $p$ over $V$ it follows that
+	\begin{align}
+		\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{p_i+\sum_{j:j\to i}p_j}\leq \mas(G).
+	\end{align}
+\end{lemma}
+
+The lemma's proof is included here as it shows how to connect the graph theoretic property $\mas(G_t)$ with the central sum $V_t$. 
+\begin{proof}
+	Let $N_i^-$ be the set of vertices such that $j\in N_i^-$ iff $j\to i$. $N_i^-$ is the in-neighbourhood of $i$. The lemma is proved by adding elements to an initially empty set $V'$. Let 
+	$$\Phi_0=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{p_i+\sum_{j:j\to i}p_j}$$
+	and let $i_1$ be the vertex that minimises $p_i+\sum_{j\in N_i^-}$ over $i\in V$. Now delete $i_1$, $N_{i_1}^-$ and all edges incident to these vertices from $G$. Let $N_{i,1}^-$ be the in-neighbourhoods after the first step. Note that the contribution of all the deleted vertices to $\Phi_0$ is 
+	\begin{align*}
+		&\sum_{r\in N_{i_1}^-\cup\{i_1\}}\frac{p_r}{p_r+\sum_{j\in N_r^-}p_j}\\
+		&\:\:\leq \sum_{r\in N_{i_1}^-\cup\{i_1\}}\frac{p_r}{p_{i_1}+\sum_{j\in N_{i_1}^-}p_j}=1,
+	\end{align*}
+	where the inequality comes from the minimality of $i_1$. Let $V'\leftarrow V'\cup \{i_1\}$ and $V_1=V\backslash (N_{i_1}^-\cup\{i_1\})$. Then, the first step yields
+	\begin{align*}
+		\Phi_1=&\sum_{i\in V_1}\frac{p_i}{p_i+\sum_{j\in N_{i,1}^-}p_j}\\
+		\geq & \sum_{i\in V_1}\frac{p_i}{p_i+\sum_{j\in N_i^-}p_j}\\
+		\geq &\:\Phi_0-1.
+	\end{align*}
+	This process is repeated over $\Phi_1$, and then $\Phi_2$... until no vertices are left in the graph. This gives $$\Phi_0\leq s=|V'|=\mas(G),$$ with $V'=\{i_1, i_2,...,i_s\}.$ Moreover, each step $r=1,...,s$ removes all incoming arcs to $i_r$, $V'$ cannot contain cycles. 
+\end{proof}
+
+Comparing this lemma with lemma \ref{alon:foundation} immediately yields the regret bounds in \ref{alon:undirected}.
+
+For the undirected case, corollary \label{alon:corollary} is tight. However, in the directed case, theorem \ref{alon:undirected}, the bound is loose which can be seen by the following construction. 
+
+\begin{corollary}
+	Let $G=(V,D)$ be a total order on $V=\{1,...,|\mathcal{K}|\}$ such that for all $i\in V$, arc $(j,i)\in D$ for all $j=i+1,...,K$. Let $p=(p_1,...,p_{|\mathcal{K}|})$ be a distribution on $V$ such that $p_i=2^{-1}$, for $i< |\mathcal{K}|$ and $p_k=2^{-|\mathcal{K}|+1}$. Then, by the geometric series,
+	\begin{align*}
+		Q&=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{p_i+\sum_{j:j\to i}p_j}\\
+		 &=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{\sum_{j=1}^{|\mathcal{K}|}p_j}=\frac{|\mathcal{K}|+1}{2}.
+	\end{align*}
+\end{corollary} 
+
+While these proofs show the gist of the ideas in the paper, the authors move on to provide a general bound that holds in the directed case. Due to the corollary above, this is only possible in the informed setting. They modify the Exp3 algorithm and name it Exp3-DOM. It uses the Greedy Set Cover algorithm to approximate the minimal dominating set, which it uses to bound the regret with $\alpha(G_t)$. The bound is tight up to logarithmic dependencies on $K$, and follows a similar proof outline as above. 
+
+\begin{theorem}
+	If Exp3-DOM uses the Greedy Set Cover algorithm to compute dominating sets, then the regret of Exp-DOM using the doubling trick satisfies
+	\begin{align*}
+		R_T&=\mathcal{O}\bigg(\ln(|\mathcal{K}|)\sqrt{\ln(|\mathcal{K}| T)\sum_{t=1}^T\alpha(G_t)}\\
+		&+\ln(|\mathcal{K}|)\ln(|\mathcal{K}|T)\bigg).
+	\end{align*}
+\end{theorem}
+
+
+\subsection{Total Variation}
 The paper by \citep{hazan} introduces the very ineresting notion of bounding
 the regret of an agent in the bandit setting by the total variation of the reward vector 
 that agent recieves, we discuss the primary conceptual ideas present in the paper here. \\
@@ -14,7 +106,7 @@ are certain things that can be exploited, like correlations with congestion and 
 
 \textbf{Total Variation and resevoir sampling}
 Taking this point of view, we first need a formal definition of variation to use.  \citep{hazan} uses the
-\textit{quadratic variation} of the loss vectors  which is defined as $Q_T := \sum_{t=1}^T || f_t - \mu ||^2$,
+\textit{quadratic variation} of the loss vectors which is defined as $Q_T := \sum_{t=1}^T || f_t - \mu ||^2$,
 where $f_t$ is the cost vector at time $t$ and $\mu$ is the mean of all the cost vectors
 $\mu = \sum_{t=1}^T f_t$. \\
 
