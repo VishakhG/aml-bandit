@@ -28,7 +28,7 @@ The proof is a straightforward application of the Exp3 proof technique where car
 \begin{theorem} \label{alon:undirected}
 	In the asymmetric case, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)\sum_{t=1}^Tm_t}$ with $m_t$ bounding $\mas(G_t)$ for $t=1,...,T$, the regret of Exp3-SET satisfies 
 	\begin{align}
-		R_T\leq \frac{\ln K}{\eta} \leq +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]
+		R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]
 	\end{align}
 \end{theorem} 
 
@@ -37,7 +37,7 @@ An straightforward consequence is the following corollary.
 \begin{corollary} \label{alon:corollary}
 	In the symmetric case, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)\sum_{t=1}^T\alpha_t}$ with $\alpha_t$ bounding $\alpha(G_t)$ for $t=1,...,T$, the regret of Exp3-SET satisfies 
 	\begin{align}
-		R_T\leq \frac{\ln K}{\eta} \leq +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\alpha(G_t)].
+		R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\alpha(G_t)].
 	\end{align}
 \end{corollary}
 
@@ -144,19 +144,8 @@ Furthermore, the following Minkowsky function definition is needed.
 From these definitions it follows that $W_1({\bf x}) \subseteq \mathcal{K} \text{ for any } {\bf x} \in \mathcal{K}$, which allows for sampling in an unbiased way from the feasible set.
 
 
-The main algorithm consists of two steps 
-\begin{enumerate}
-\item
-  SIMPLEXSAMPLE
-\item
-  ELLIPSOIDSAMPLE
-\end{enumerate}
-
-SIMPLEXSAMPLE does the reservoir sampling and maintains the estimator of the reward vector
-$f_t$. 
-
-ELLIPSOIDSAMPLE randomly chooses an actual point $y_t$ from the endpoints of the
-principle axes of the Dikin ellipsoid $W_1(x)$ centered at $x_t$. Due to the definitions and 
-results above, we know that this sample is in the feasible set of points. Furthermore its been shown in \citep{abernethy} that the sampling is unbiased and has low variation.
-The  $\tilde{\mu_t}$ that is calculated in SIMPLEXSAMPLE is incorporated in ELLIPSOIDSAMPLE for smarter exploration which allows regret bounds based on the total
-variation.  
+The main algorithm consists of two steps: The \textit{SimplexSample} and the \textit{EllipsoidSample} step.
+SimplexSample takes care of the reservoir sampling and maintains the estimator of the loss vector
+${\bf f}_t$. EllipsoidSample randomly chooses an actual point ${\bf y_t}$ from the endpoints of the
+principle axes of the Dikin ellipsoid $W_1({\bf x})$ centered at ${\bf x}_t$. From the definitions above this sample point is in the feasible set of points. Furthermore its been shown in \citep{abernethy} that the sampling is unbiased and has low variation. The $\tilde{\mu_t}$ that is calculated in SimplexSample is then incorporated in EllipsoidSample for smarter exploration which allows regret bounds based on the total
+variation. 
