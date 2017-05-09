@@ -3,6 +3,10 @@
 \usepackage{algorithmic}
 \usepackage{listings}
 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{graphicx}
+
 \usetheme{metropolis}          
 \title{Bandit Problems}
 \date{\today}
@@ -143,12 +147,16 @@
         \item
           Ensure that we always sample from the feasible set
         \end{itemize}
-        
+     \item
+       FTRL ++
+        \begin{align*}
+          \argmin_{{\textbf{x}}_t\in\mathcal{K}}\eta \sum_{t=1}^{t-1} \tilde{f_{\tau}}^T + \mathcal{R}(x)
+        \end{align*}
 
     \end{enumerate}
   \end{frame}
        
-\begin{frame}[fragile]{resevoir sampling}
+\begin{frame}[fragile]{Resevoir Sampling}
   \begin{itemize}
   \item
       Sample uniformly at random from a stream of unknown size
@@ -174,10 +182,10 @@
   \input{bbb_mainalgo.tex}
 \end{frame}
 
-\begin{frame}{explore}
+\begin{frame}{Explore}
   \input{bbb_SIMPLEXSAMPLE}
 \end{frame}
-\begin{frame}{explore exploit}
+\begin{frame}{Explore-Exploit}
   \input{bbb_ELLIPSOIDSAMPLE}
 \end{frame}
 
