@@ -75,34 +75,34 @@ for a directed graph in the uninformed setting, that is the feedback graph is re
 
 $$R_t \leq O(\log K\sqrt{\log KT\sum_{t=1}^T\alpha(G_t)}$$
 
-\subsection{LP relaxations}
+\subsection{Restless bandits}
 
 \subsubsection{Overview of results}
-The main contribution provided by \citep{bertsimas} is to provide a hierarchy of LP-relaxations
-to approximately solve the restless bandits problem. Earlier we stated what the restless
-bandits problem consists of and the key quantities of interest. Here we first describe the ideas leading up to, and influencing, these results. We then formally state the LP-relaxation developed by \citep{bertsimas} for the restless bandits including pertinent quantities and relationships. Then we summarize experimental results provided by the authors before finishing with a discussion of theoretical findings and computational concerns.
+The main contribution of \citep{bertsimas} is to provide a hierarchy of LP-relaxations
+to approximately solve the restless bandits problem which we described earlier.
+
+In this section we describe the ideas that influenced these results, formally state the LP-relaxation technique developed by \citep{bertsimas}, and  summarize experimental results provided by the authors.
 
 \subsubsection{Related ideas and motivating work}
-The results provided by \citep{bertsimas} directly draw inspiration from previous work and ideas in combinatorial optimization, stochastic optimization and attempts to formulate LP-relaxations for the restless bandits approach that have been undertaken before. \\ 
+The technique employed by \citep{bertsimas} directly draws inspiration from previous work and ideas in combinatorial optimization and stochastic optimization. 
 
+A first order relaxation for the restless bandits problem was introduced by \citep{whittle}. This version could be solved effeciently in polynomial time but there were many restrictions and assumptions made by the approach which makes it less than ideal.\\
 
-A first order relaxed version of the restless bandits problem was introduced by \citep{whittle}. This version could be solved in polynomial time. There were many restrictions and assumptions made by the approach which makes it less than ideal. Whittle also proposed a heuristic that relaxes the problem into one solvable in polynomial time. This heuristic, however only applies to a restricted class of bandits and is not as general as those developed here.\\
-
-Another motivating result was the finding by \citep{papad}that the general restless bandits is PSPACE-hard. This  motivates an approximate solution rather than trying to find an exact one which is infeasible in general. \\ 
+Another motivating result was the discovery  by \citep{papad}that the general restless bandits is PSPACE-hard which makes it intractable in general. This obviously puts the emphasis on trying to find good approximate solutions rather than solve the problem exactly. \\ 
 
 \subsubsection{Formulation and relaxation}
 
-We now show how \citep{bertsimas} phrase the restless bandit problem in the language of Linear Programs and thereby procure a relaxation to the latter type of problem. They first describe performance measures for the problem.
+We now show how \citep{bertsimas} phrase the restless bandit problem as a LP problem. 
 
 Let the state-action space be  $\ell= \{(i,a): i \in \mathcal{L}, a \in  \mathcal{A}_i \}$
-with states $i$ and actions $a$. Then the following performance measures can be introduced :
+with states $i$ and actions $a$. Then the following performance measures can be introduced:
 
 $x_j(u) = E_u[\sum_{t=0}^{\infty}I_j^a(t) \beta^t]$ where $I_j^a = 1$ if an action is taken at the time step t in the state j, and 0 otherwise. 
 
-The optimization process that follows from the performance measure introduced is as follows 
+The optimization process that follows from the performance measure is as follows 
 $Z^* = max_{u \in \mathcal{U}} \sum_{(i,a) \in \mathcal{L}} R_j^a x_j^a(u)$.  
 
-Finally they show the explicit performance region spanned by the vectors $x(u)$ under all the policies that are in consideration. This leads to a mathematical program : 
+Finally the authors show the explicit performance region spanned by the vectors $x(u)$ under all the policies that are in consideration. This leads to a mathematical program: 
 
 $Z^* = max_{x \in \mathcal{X}}\sum_{(i,a)\in \mathcal{L}}R_i^a x_i^a$ where $x = (x_j^a)$. 
 
@@ -112,17 +112,19 @@ $\mathcal{P} = \{ x \in R_+^{|\mathcal{L}|} \}: \sum_{a \in \mathcal{A}} x_j^a =
 + \beta \sum_{(i,a) \in \mathcal{L}} p_{i,j}^a x_i^a, j  \in \mathcal{L}$ 
 
 Next the authors present the crucial argument that leads to an LP formulation of the problem.
-They present a known theorem that connects the polytope and the performance region.
+They present a known theorem that connects the polytope and the performance region. 
 
 The following statements hold
-\begin{equation}
-(a) X = \mathcal{P}
-(b)\text{the vertices of the polytope } \mathcal{P}
-\end{equation} 
+\begin{enumerate}
+\item
+ $X = \mathcal{P}$ \\
+\item
+  The vertices of the polytope: $\mathcal{P}$ are achievable by stationary 
+deterministic policies
+\end{enumerate} 
 
-are achievable by stationary deterministic policies
-
-This leads to the formal formulation of the restless bandit problem as an LP.
+The notion of performance region becomes important to the formulation of the problem as an
+LP so we list them here:
 
 First take the following two performance measures:
 $x_{i_n}^1 = E_u[\sum_{t=0}^{\infty} I_{i_n}(t)\beta^t]$ 
@@ -133,12 +135,13 @@ $I_{i_n}^1(t)$ is 1 if project n is in state $i_n$and active at time t and 0 oth
 
 $I_{i_n}^0(t)$ is 1 if the project n is in state $i_n$ and passive at time t and 0 otherwise.
 
-Thus we give one performance measure to the current set of active tasks and one for the current set of passive tasks. To combine them and get a performance measure for the entire region would give : 
+Thus we give one performance measure to the current set of active tasks and one for the current set of passive tasks. To combine them and get a performance measure for the entire region would take: 
 
+\begin{align*}
+X = \{x = (x_{i_n}^{a_n}(u))_{i_n \in \mathcal{L}_n, a_n \in \{0,1\}, n \in \mathcal{N}|u \in \mathcal{U}}\}
+\end{align*}
 
-$X = \{x = (x_{i_n}^{a_n}(u))_{i_n \in \mathcal{L}_n, a_n \in \{0,1\}, n \in \mathcal{N}|u \in \mathcal{U}}\}$\\
-
-From the theorem shown earlier we know that there is a correspondence between a discounted MDC and a polytope which means we can take the performance measures and create a linear program associated to that polytope.
+From the theorem shown earlier we know that there is a correspondence between a discounted MDC and a polytope which means we can take the performance measures and create a linear program associated to the polytope.
 
 $(LP) Z* = max_{x \in \mathcal{X}} \sum_{n \in \mathcal{N}} \sum_{i_n \in \mathcal{L}_n} 
 \sum_{a_n \in \{ 0m1\} R_{i_n}^{a_n} x_{i_n}^{a_n}} $
