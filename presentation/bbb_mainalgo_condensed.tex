@@ -1,0 +1,41 @@
+\begin{center}
+    \scalebox{0.7}{
+    \begin{minipage}{0.7\linewidth}
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+
+    \STATE{Input:
+      \begin{enumerate}
+        \item
+          $\eta > 0$
+        \item
+          $\mathcal{V} \text{-self-concordant } \mathcal{R}$
+         \item
+          Resevoir size parameter $k$
+     \end{enumerate}
+   }
+   
+    \FOR{$t=1$  \TO T} 
+    \STATE{\IF{$t \leq nk$}
+    \STATE{
+        Set $\tilde{\mu_t} \leftarrow SIMPLEXSAMPLE(i_t)$ \\
+        Set $\tilde{f_t}=0$
+      }
+      
+      \ELSE
+      \STATE{
+        Set $\tilde{\mu_t} = \mu_{t-1}$ \\
+        Set $\tilde{f_t} \leftarrow ELLIPSOIDSAMPLE(x_t, \tilde{\mu_t})$
+      }
+      \ENDIF \\
+    $x_{t+1} = argmin_{x \in \mathcal{K}}[\eta \sum_{\tau =1}^t \tilde{f_{\tau}^T} x + \mathcal{R}(x)]$
+    }
+    \ENDFOR
+    
+
+  \end{algorithmic}
+  \caption{\label{alg:seeifrelin} Bandit online linear optimization}
+\end{algorithm}
+\end{minipage}
+}
+\end{center}

@@ -1,12 +1,11 @@
 \frametitle{Resevoir Sampling}
 \begin{itemize}
   \item
-      Sample uniformly at random from a stream of unknown size
+      Sample uniformly at random from a stream of unknown size \footnotemark
  \end{itemize}
 
   \lstset{language=Python}
   \lstset{frame=lines}
-  %TODO cite jeremey kun
   \lstset{basicstyle=\footnotesize}
   \begin{lstlisting}
     import random
@@ -18,3 +17,10 @@
 
     return chosen
   \end{lstlisting}
+  \begin{itemize}
+    \item
+      Use this to track $\tilde{u}_t$
+     \item
+       a resevoir $S_{i,j}$ for each coordinate
+  \end{itemize}
+  \footnotetext[1]{Python code due to https://jeremykun.com/2013/07/05/reservoir-sampling/}

@@ -75,8 +75,8 @@
   \end{enumerate}
 \end{frame}
 
-\section{Problem Definition}
-\begin{frame}
+
+\begin{frame}{Problem Definition}
   \begin{enumerate}
     \item Online learner
     \item At each round $t$, picks an action from $i\in\mathcal{K}$
@@ -117,7 +117,7 @@
     \end{enumerate}
   \end{itemize}
   % setting.
-  % Motivate by example of web advertisement.    
+ % Motivate by example of web advertisement.    
 \end{frame}
 
 \begin{frame}{High Level Overview}
@@ -237,12 +237,11 @@
 \begin{frame}[fragile]{Resevoir Sampling}
   \begin{itemize}
   \item
-      Sample uniformly at random from a stream of unknown size
+      Sample uniformly at random from a stream of unknown size \footnotemark
  \end{itemize}
 
   \lstset{language=Python}
   \lstset{frame=lines}
-  %TODO cite jeremey kun
   \lstset{basicstyle=\footnotesize}
   \begin{lstlisting}
     import random
@@ -254,10 +253,17 @@
 
     return chosen
   \end{lstlisting}
+  \begin{itemize}
+    \item
+      Use this to track $\tilde{u}_t$
+     \item
+       a resevoir $S_{i,j}$ for each coordinate 
+  \end{itemize}
+  \footnotetext[1]{Python code due to https://jeremykun.com/2013/07/05/reservoir-sampling/}
 \end{frame}
 
-\begin{frame}{Main algorithm}
-  \input{bbb_mainalgo.tex}
+\begin{frame}{Main algorithm condensed}
+  \input{bbb_mainalgo_condensed.tex}
 \end{frame}
 
 \begin{frame}{Explore}
