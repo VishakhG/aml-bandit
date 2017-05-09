@@ -4,7 +4,7 @@
 \usepackage{listings}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
-
+\usepackage{amsmath}
 \usepackage{graphicx}
 
 \usetheme{metropolis}          
@@ -123,9 +123,9 @@
   \begin{itemize}
     \item Modification of Exp3: \textit{Exp3-SET}
     
-    \item Key quantity $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
+    %\item Key quantity $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
 
-    \item Regret bound satisfies $$R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]$$
+    %\item Regret bound satisfies $$R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]$$
   \end{itemize}
   % Conceptual understanding - interpolation between
   % different settings (similar to the bonus problem) - plug in and get results.
