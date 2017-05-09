@@ -1,4 +1,8 @@
 \documentclass{beamer}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+
 \usetheme{metropolis}          
 \title{Bandit Problems}
 \date{\today}
@@ -99,22 +103,89 @@
 % Total variation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{frame}{High level overview}
-  % Description, example and why its interesting
-\end{frame}
-\begin{frame}{Problem description}
-  % Describe connections and terminology
-\end{frame}
-\begin{frame}{Algorithm high level}
-  % talk about FTRL + self concordant regularization
-  % Introduce resevoir sampling
-\end{frame}
-\begin{frame}{Resevoir sampling}
-  % Description
-  % python code (1 liner)
+
+  \begin{enumerate}
+  \item
+    Losses might not be truly adversarial
+    \begin{itemize}   
+    \item
+      Example: planning a route to work in traffic
+    \end{itemize}
+    \item
+      Can we take advantage of low variation in our algorithm?
+    \item
+       Can we bound regret based on variability?
+      \begin{itemize}
+        \item
+          Learning should depend on the \textit{total variation} of the losses
+        \end{itemize}
+  \end{enumerate}
 \end{frame}
 
+\begin{frame}{Problem description}
+  \begin{enumerate}
+    \item
+    Online bandit convex optimization
+    \begin{itemize}
+      \item
+        Adversarial but oblivious
+      \item
+        Point ${\bf x}_t$ from $\mathcal{K}$, compact set
+      \item
+        Cost vector $f_{t}$
+      \end{itemize}
+    \item
+      Take the total variation
+      $Q_T=\sum_{t=1}^T \| f_t - \mu \|^2$
+    \item
+      Recall barrier functions and self concordant functions
+      \begin{itemize}
+        \item
+          Ensure that we always sample from the feasible set
+        \end{itemize}
+        
+
+    \end{enumerate}
+  \end{frame}
+       
+\begin{frame}[fragile]{resevoir sampling}
+  \begin{itemize}
+  \item
+      Sample uniformly at random from a stream of unknown size
+ \end{itemize}
+
+  \lstset{language=Python}
+  \lstset{frame=lines}
+  %TODO cite jeremey kun
+  \lstset{basicstyle=\footnotesize}
+  \begin{lstlisting}
+    import random
+
+    def reservoirSample(stream):
+        for k,x in enumerate(stream, start=1):
+        if random.random() < 1.0 / k:
+            chosen = x
+
+    return chosen
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Main algorithm}
+  \input{bbb_mainalgo.tex}
+\end{frame}
+
+\begin{frame}{explore}
+  \input{bbb_SIMPLEXSAMPLE}
+\end{frame}
+\begin{frame}{explore exploit}
+  \input{bbb_ELLIPSOIDSAMPLE}
+\end{frame}
+
+
 \begin{frame}{Bound}
-  % describe the bound, why its interesting and what it took to get it to work
+  \begin{equation}
+    E[Regret_t] = O(n \sqrt{\mathcal{V}Q log T} + n log^2(T) + n \mathcal{V}log(T))
+  \end{equation}
 \end{frame}
 
 \section{Connections and exploration}
