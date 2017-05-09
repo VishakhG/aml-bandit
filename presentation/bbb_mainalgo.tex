@@ -1,0 +1,48 @@
+\begin{center}
+    \scalebox{0.5}{
+    \begin{minipage}{0.7\linewidth}
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+
+    \STATE{Input: $\eta > 0, \mathcal{V} \text{-self-concordant } \mathcal{R}, \text{ resevoir size parameter } k$} \\
+
+    \STATE{
+      Initialization: for all $i \in [n], j \in [k]$ set $S_{i,j} =0$ Set $x_i = argmin_{x\in \mathcal{K}}[\mathcal{R}(x)]$ and $\tilde{\mu_o}=0$ \\
+      Let $\pi : \{1,2,...,nk\} \rightarrow \{1,2,..,nk\}$ be a random permutation.
+    }\\
+
+    \FOR{$t=1$  \TO T} 
+
+    \STATE{
+      Set $r=1$ with probability $\text{ min } \{ \frac{nk}{t}, 0 \}$, and $0$ with probability 
+      $1 - \text{ min } \{\frac{nk}{t}, 1\}$
+      \IF{r = 1} 
+
+      \STATE{
+        \IF{$t \leq nk$}
+        \STATE{Set $i_t = (\pi(t) \text{ mod } n) + 1$}
+        \ELSE
+        \STATE{Set $i_t$ uniformly at random from $\{1,2,...,n\}$}
+        \ENDIF \\
+        
+        Set $\tilde{\mu_t} \leftarrow SIMPLEXSAMPLE(i_t)$ \\
+        Set $\tilde{f_t}=0$
+      }
+      
+      \ELSE
+      \STATE{
+        Set $\tilde{\mu_t} = \mu_{t-1}$ \\
+        Set $\tilde{f_t} \leftarrow ELLIPSOIDSAMPLE(x_t, \tilde{\mu_t})$
+      }
+      \ENDIF \\
+      $x_{t+1} = argmin_{x \in \mathcal{K}}[\eta \sum_{\tau =1}^t \tilde{f_{\tau}^T} x + \mathcal{R}(x)]$
+    }
+    \ENDFOR
+    
+
+  \end{algorithmic}
+  \caption{\label{alg:seeifrelin} Bandit online linear optimization}
+\end{algorithm}
+\end{minipage}
+}
+\end{center}

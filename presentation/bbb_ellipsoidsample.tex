@@ -1,0 +1,35 @@
+\begin{center}
+    \scalebox{0.75}{
+    \begin{minipage}{0.7\linewidth}
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+    \STATE{
+      Let $\{v_1, ..,v_n\}$ and $\{\lambda_1, ... , \lambda_n\}$ be the set of 
+      orthogonal eigenvectors and eigenvalues of $\nabla^2 \mathcal{R}(x_t)$ 
+    }
+    
+    \STATE{
+      Choose $i_t$ uniformly at random from $\{1, ..., n\}$ and $\epsilon_t \pm 1$
+      with probability $\frac{1}{2}$
+    }
+    
+    \STATE{
+      Predict $y_t = x_t + \epsilon_t \lambda_{i_{t}}^{-\frac{1}{2}} v_{i_{t}}$ 
+    }
+
+    \STATE{
+      Observe the cost $f_{t}^Ty_{t}$
+    }
+    
+    \STATE{
+      Return $\tilde{f}_t$ defined as :$ \tilde{f}_t = \tilde{\mu}_t + \tilde{g}_t$\\
+      Where $\tilde{g}_t := n(f_{t}^Ty_t - \tilde{\mu_t} y_t) \epsilon_{t} \lambda_{i_{t}} v_{i_{t}}$
+      
+    }
+  \end{algorithmic}
+  
+  \caption{\label{alg:seeifrelin} ELLIPSOIDSAMPLE($x_t$, $\tilde{u}_t$)}
+\end{algorithm}
+\end{minipage}
+}
+\end{center}

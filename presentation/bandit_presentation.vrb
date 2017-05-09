@@ -1,0 +1,20 @@
+\frametitle{resevoir sampling}
+\begin{itemize}
+  \item
+      Sample uniformly at random from a stream of unknown size
+ \end{itemize}
+
+  \lstset{language=Python}
+  \lstset{frame=lines}
+  %TODO cite jeremey kun
+  \lstset{basicstyle=\footnotesize}
+  \begin{lstlisting}
+    import random
+
+    def reservoirSample(stream):
+        for k,x in enumerate(stream, start=1):
+        if random.random() < 1.0 / k:
+            chosen = x
+
+    return chosen
+  \end{lstlisting}
