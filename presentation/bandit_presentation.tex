@@ -11,7 +11,7 @@
 \title{Bandit Problems}
 \date{\today}
 \author{Vishakh Gopu, Frederik Jensen}
-\institute{Advanced machine learning}
+\institute{Advanced Machine Learning - Spring 2017}
 \begin{document}
 \maketitle
 
@@ -24,28 +24,26 @@
   Three main problem settings: 
   \begin{enumerate}
   \item
-    Restless bandits
+    Restless Bandits
     \begin{itemize}
     \item
-      bertsimas, Dimitris,Nin ̃o-Mora, Jose ́. 2000. Rest- less Bandits, Linear Programming
-      Relaxations, and a
-      Primal-Dual Index Heuristic. Operations Research, 48(1), 80–90.
+      Bertsimas, Dimitris, Nin\~o-Mora, Jos\'e. 2000. Restless Bandits, Linear Programming
+      Relaxations, and a Primal-Dual Index Heuristic. Operations Research, 48(1), 80–90.
     \end{itemize}
   \item
-    Graph structured feedback
+    Graph Structured Feedback
     \begin{itemize}
     \item
-      Alon, Noga, Cesa-Bianchi, Nicolo`, Gentile, Claudio, Mannor, Shie, Mansour, Yishay,
-      Shamir, Ohad. 2014. Nonstochastic Multi-Armed Bandits with Graph- Structured Feedback.
+      Alon, Noga, Cesa-Bianchi, Nicol\`o, Gentile, Claudio, Mannor, Shie, Mansour, Yishay,
+      Shamir, Ohad. 2014. Nonstochastic Multi-Armed Bandits with Graph-Structured Feedback.
       CoRR, abs/1409.8428.
     \end{itemize}
   \item
-    Handling the variance in rewards
-    
+    Handling Variance in Rewards
     \begin{itemize}
     \item
       Hazan, Elad, Kale, Satyen. 2009. Better Algorithms for Benign Bandits. Pages 38–47 of: 
-      Proceedings of the Twentieth Annual ACM-SIAM Symposium on Discrete Algorithms. SODA ’09.
+      Proceedings of the Twentieth Annual ACM-SIAM Symposium on Discrete Algorithms. SODA '09.
       Philadelphia, PA, USA: Society for Industrial and Applied Mathematics.
     \end{itemize}
   \end{enumerate}
@@ -53,6 +51,9 @@
 
 \begin{frame}{Outline}
   \begin{enumerate}
+
+  \item Problem Definition
+  
   \item
     A quick look at restless bandits
     
@@ -73,6 +74,17 @@
   \end{enumerate}
 \end{frame}
 
+\section{Problem Definition}
+\begin{frame}
+  \begin{enumerate}
+    \item Online learner
+    \item At each round $t$, picks an action from $i\in\mathcal{K}$
+    \item Loss $L$ only disclosed for action $i$
+    \item Regret guarantees
+  \end{enumerate}
+\end{frame}
+
+
 \section{Restless bandits}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Restless bandits 
@@ -88,18 +100,44 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Non stochastic bandits with graph structured feedback
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\begin{frame}{High level overview}
+\begin{frame}{Problem Reformulation}
+  \begin{itemize}
+    % Details about the problem.
+    \item Web advertisement example
 
-\end{frame} 
+    % How is it different from the general bandit
+    \item Partial information setting
 
-\begin{frame}{Problem formulation}
-
+    \item Action set $\mathcal{K}\in \mathbb{R}^n$ for $n$ experts
+    \item Feedback graph $G_t(\mathcal{K}, D_t)$ 
+    \begin{enumerate}
+      \item Edge $(i,j)\in D_t$ if playing $i$ at time $t$ reveals loss $j$
+      \item Write $i\overline{t}{\to}j$
+    \end{enumerate}
+  \end{itemize}
+  % setting.
+  % Motivate by example of web advertisement.    
 \end{frame}
 
+\begin{frame}{High Level Overview}
+  \begin{itemize}
+    \item Modification of Exp3: \textit{Exp3-SET}
+    
+    \item Key quantity $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
+
+    \item Regret bound satisfies $$R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]$$
+  \end{itemize}
+  % Conceptual understanding - interpolation between
+  % different settings (similar to the bonus problem) - plug in and get results.
+\end{frame} 
+
 \begin{frame}{KEY RESULT 1}
+  % Algorithm - similarity to Exp3. Show it
+  % Key term for bound.
 \end{frame}
 
 \begin{frame}{KEY RESULT 2}
+  % Getting the maximum acyclic graph in there.
 
 \end{frame}
 \section{Better algorithms for benign bandits}
