@@ -21,7 +21,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \section{Introduction}
-\begin{frame}{Overview of papers}   
+\begin{frame}{Overview of Papers}   
   Three main problem settings: 
   \begin{enumerate}
   \item
@@ -52,52 +52,29 @@
 
 \begin{frame}{Outline}
   \begin{enumerate}
-
-  \item Problem Definition
-  
   \item
-    A quick look at restless bandits
-    
+    Graph Structured Feedback Review
   \item
-    Graph structured feedback and benign bandits in more depth
-    \begin{itemize}
-    \item
-      Problem description
-    \item
-      Selected results
-    \end{itemize}
-    
+    Better Algorithms for Benign Bandits Review
   \item
-    Interesting connections and relationships 
-  \item
-    Questions, exploration, future work
+    Exploration and future work
     
   \end{enumerate}
 \end{frame}
 
 
-\begin{frame}{Problem Definition}
-  \begin{enumerate}
-    \item Online learner
-    \item At each round $t$, picks an action from $i\in\mathcal{K}$
-    \item Loss $L$ only disclosed for action $i$
-    \item Regret guarantees
-  \end{enumerate}
-\end{frame}
+% \section{Problem Definition}
+% \begin{frame}
+%   \begin{enumerate}
+%     \item Online learner
+%     \item At each round $t$, picks an action from $i\in\mathcal{K}$
+%     \item Loss $L$ only disclosed for action $i$
+%     \item Regret guarantees
+%   \end{enumerate}
+% \end{frame}
 
 
-\section{Restless bandits}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-% Restless bandits 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
-\begin{frame}{Quick overview}
-  % Talk about the problem setting and brief  high level description 
-  % of the result (avoid showing any results)
-  % Mention its in the interest of time
-\end{frame}
-
-\section{Non stochastic bandits with graph structured feedback}
+\section{Non-Stochastic Bandits with Graph Structured Feedback}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Non stochastic bandits with graph structured feedback
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -132,31 +109,41 @@
           \hline
           \textbf{Directed} & Exp3-SET ($\mas{G_t}$) & Exp3-DOM\\
           \hline
-          \textbf{Undirected} & Exp3-Set ($\alpha(G_t)$) & Exp3-DOM\\
+          \textbf{Undirected} & Exp3-SET ($\alpha(G_t)$) & Exp3-DOM\\
           \hline
       \end{tabular}
       \end{figure}
-
-    \item Key quantity: $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
+    \item $\mas(G_t) \geq \alpha(G_t)$
   \end{itemize}
   % Conceptual understanding - interpolation between
   % different settings (similar to the bonus problem) - plug in and get results.
 \end{frame} 
 
 \begin{frame}{Guarantees of Exp3-SET}
-   \begin{itemize}
-   \item For Exp3-SET, let $\mas(G_t)\leq m_t$ for $t=1,...,T$. Then, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)/\sum_{t=1}^T m_t}$ yields the regret bound: $$R_T\leq \sqrt{2(\ln |\mathcal{K}|)\sum_{t=1}^Tm_t}$$
+  \begin{itemize}
+    \item Key quantity: $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}i} p_{j,t}}$$
 
-   \item Interpolation
+    \item The regret of Exp3-SET satisfies
+    $$
+    R_t\leq \frac{\ln |\mathcal{K}|}{\eta} + \frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[Q_t].
+    $$
+   
+    \item Interpolation
 
-   \item Problem: Computing $\mas(G_t)$ and $\alpha(G_t)$ (NP-hard). 
  \end{itemize}
+\end{frame}
+
+\begin{frame}{Guarantees of Exp3-SET (2)}
+\begin{itemize}
+    \item For Exp3-SET, let $\mas(G_t)\leq m_t$ for $t=1,...,T$. Then, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)/\sum_{t=1}^T m_t}$ yields the regret bound: $$R_T\leq \sqrt{2(\ln |\mathcal{K}|)\sum_{t=1}^Tm_t}$$
+
+     \item Problem: Loose bound, computing $\mas(G_t)$ and $\alpha(G_t)$ (NP-hard) 
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Loose regret bound for Exp3-SET}
   \begin{itemize}
    \item Counter example for $|\mathcal{K}|=4$
-
 
    \begin{figure}
     \centering
@@ -280,9 +267,11 @@
   \end{equation}
 \end{frame}
 
-\section{Connections and exploration}
-\begin{frame}{Connections between papers}
+\section{Connections and Exploration}
+\begin{frame}{Connections}
   \begin{enumerate}
+  \item
+    Builds on classes
   \item
     Letting novel mathematical tools guide the approach
   \item 
@@ -290,13 +279,13 @@
   \end{enumerate}
 \end{frame}
 
-\begin{frame}{Exploration}
-  % talk about the idea we have.
-\end{frame}
-
-\section{Conclusion}
 \begin{frame}{Open questions, future work}
-  % Open questons from hazan, future ideas
+  \begin{itemize}
+    \item (GSF) Loss dependent MAB Graph Structured Feedback
+    \item (BBB) Bound the regret by the variation of the best action in hindsight
+    \item Improve the bounds
+    \item Bound the Exp3 by the maximum variation in loss
+  \end{itemize}
 \end{frame}
 
 \section{Questions}
