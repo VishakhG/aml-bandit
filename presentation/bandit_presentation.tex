@@ -6,6 +6,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\newcommand{\mas}{\text{\normalfont mas}}
 
 \usetheme{metropolis}          
 \title{Bandit Problems}
@@ -112,7 +113,7 @@
     \item Feedback graph $G_t(\mathcal{K}, D_t)$ 
     \begin{enumerate}
       \item Edge $(i,j)\in D_t$ if playing $i$ at time $t$ reveals loss $j$
-      \item Write $i\overline{t}{\to}j$
+      \item Write $i\overset{t}{\to}j$
     \end{enumerate}
   \end{itemize}
   % setting.
@@ -121,25 +122,64 @@
 
 \begin{frame}{High Level Overview}
   \begin{itemize}
-    \item Modification of Exp3: \textit{Exp3-SET}
-    
-    %\item Key quantity $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
+    \item Modification of Exp3 based on maximum acyclic graph $\mas(G_t)$ and the independence number $\alpha(G_t)$
+    \item Scenarios
+      \begin{figure}[]
+      \center
+      \begin{tabular}{ | c | c | c | }
+          \hline
+          \textbf{Algorithms} & \textbf{Uninformed} & \textbf{Informed} \\
+          \hline
+          \textbf{Directed} & Exp3-SET ($\mas{G_t}$) & Exp3-DOM\\
+          \hline
+          \textbf{Undirected} & Exp3-Set ($\alpha(G_t)$) & Exp3-DOM\\
+          \hline
+      \end{tabular}
+      \end{figure}
 
-    %\item Regret bound satisfies $$R_T\leq \frac{\ln K}{\eta} +\frac{\eta}{2}\sum_{t=1}^T\mathbb{E}[\mas(G_t)]$$
+    \item Key quantity: $$Q_t=\sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{q_{i,t}} = \sum_{i\in |\mathcal{K}|}\frac{p_{i,t}}{\sum_{j:j\overset{t}{\to}j} p_{j,t}}$$
   \end{itemize}
   % Conceptual understanding - interpolation between
   % different settings (similar to the bonus problem) - plug in and get results.
 \end{frame} 
 
-\begin{frame}{KEY RESULT 1}
-  % Algorithm - similarity to Exp3. Show it
-  % Key term for bound.
+\begin{frame}{Guarantees of Exp3-SET}
+   \begin{itemize}
+   \item For Exp3-SET, let $\mas(G_t)\leq m_t$ for $t=1,...,T$. Then, setting $\eta=\sqrt{(2\ln |\mathcal{K}|)/\sum_{t=1}^T m_t}$ yields the regret bound: $$R_T\leq \sqrt{2(\ln |\mathcal{K}|)\sum_{t=1}^Tm_t}$$
+
+   \item Interpolation
+
+   \item Problem: Computing $\mas(G_t)$ and $\alpha(G_t)$ (NP-hard). 
+ \end{itemize}
 \end{frame}
 
-\begin{frame}{KEY RESULT 2}
-  % Getting the maximum acyclic graph in there.
+\begin{frame}{Loose regret bound for Exp3-SET}
+  \begin{itemize}
+   \item Counter example for $|\mathcal{K}|=4$
 
+
+   \begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{dag}
+   \end{figure}
+
+
+   \item $Q=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{p_i+\sum_{j:j\to i}p_j}=\sum_{i=1}^{|\mathcal{K}|}\frac{p_i}{\sum_{j=i}^{|\mathcal{K}|}p_j}=\frac{K+1}{2}$
+
+   \item Tighter bounds $\to$ Exp3-DOM
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{Exp3-DOM}
+  \begin{itemize}
+    \item Runs $\log |\mathcal{K}|$ variants of $Exp3-DOM$
+    \item Picks result based on size of the dominating set, $R_t$
+    \item $R_t$ computed with Greedy Set Cover algorithm 
+    \item Using the doubling trick, the regret of Exp3-DOM satisfies 
+      $$R_T\leq \mathcal{O}\Bigg(\ln(|\mathcal{K}|)\sqrt{(\ln |\mathcal{K}|T)\sum_{t=1}^T\alpha(G_t)}+\ln(|\mathcal{K}|)\ln (|\mathcal{K}|T)\Bigg)$$
+  \end{itemize}
+\end{frame}
+
 \section{Better algorithms for benign bandits}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Total variation
