@@ -1,8 +1,9 @@
 \beamer@endinputifotherversion {3.33pt}
-\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
-\beamer@sectionintoc {2}{Restless bandits}{5}{0}{2}
-\beamer@sectionintoc {3}{Non stochastic bandits with graph structured feedback}{7}{0}{3}
-\beamer@sectionintoc {4}{Better algorithms for benign bandits}{12}{0}{4}
-\beamer@sectionintoc {5}{Connections and exploration}{20}{0}{5}
-\beamer@sectionintoc {6}{Conclusion}{23}{0}{6}
-\beamer@sectionintoc {7}{Questions}{25}{0}{7}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Problem Definition}{6}{0}{2}
+\beamer@sectionintoc {3}{Restless bandits}{8}{0}{3}
+\beamer@sectionintoc {4}{Non stochastic bandits with graph structured feedback}{10}{0}{4}
+\beamer@sectionintoc {5}{Better algorithms for benign bandits}{15}{0}{5}
+\beamer@sectionintoc {6}{Connections and exploration}{23}{0}{6}
+\beamer@sectionintoc {7}{Conclusion}{26}{0}{7}
+\beamer@sectionintoc {8}{Questions}{28}{0}{8}

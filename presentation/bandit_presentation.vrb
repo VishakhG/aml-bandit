@@ -1,4 +1,4 @@
-\frametitle{resevoir sampling}
+\frametitle{Resevoir Sampling}
 \begin{itemize}
   \item
       Sample uniformly at random from a stream of unknown size
