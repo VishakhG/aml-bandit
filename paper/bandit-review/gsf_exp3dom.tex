@@ -1,0 +1,56 @@
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+    \STATE{
+    	{\bf Input:} Exploration parameters $\gammab \in (0,1]$ for $b \in \bigl\{0,1,\ldots, \lfloor \log_2 K\rfloor\bigr\}$
+    }\\
+    \STATE{
+		{\bf Initialization:} $w^{(b)}_{i,1} = 1$ for all $i \in V = \{1, \ldots,K\}$ and $b \in \bigl\{0,1,\ldots, \lfloor \log_2 K\rfloor\bigr\}$
+    }\\
+
+    \FOR{$t=1$  \TO T}
+    \STATE{
+      Feedback system $\{S_{i,t}\}_{i\in V}$ is generated {\em and
+    disclosed}, (losses $\loss_t$ are generated and not disclosed);
+    }\\
+    \STATE{
+      Compute a dominating set $R_t\subseteq V$ for $G_t$ associated with
+    $\{S_{i,t}\}_{i\in V}$~;
+    }\\
+    \STATE{
+    Let $b_t$ be such that $|R_t| \in \bigl[2^{b_t},2^{b_t+1}-1\bigr]$;
+    }\\
+
+    \STATE{
+    Set $W^{(b_t)}_t = \sum_{i \in V} w^{(b_t)}_{i,t};$
+    }\\
+
+    \STATE{
+    Set ${\dt p^{(b_t)}_{i,t} = \bigl(1-\gammabt\bigr)
+    \frac{w^{(b_t)}_{i,t}}{W^{(b_t)}_{t}} + \frac{\gammabt}{|R_t|}
+    \Ind{i\in R_t} }$;
+    }\\
+
+    \STATE{
+    Play action $I_t$ drawn according to distribution $p^{(b_t)}_t =
+    \bigl(p^{(b_t)}_{1,t},\dots,p^{(b_t)}_{K,t}\bigr)$~;
+    }
+
+    \STATE{
+    Observe pairs $(i,\loss_{i,t})$ for all $i \in S_{I_t,t}$;
+    }
+    \STATE{
+      For any $i \in V$ set $w^{(b_t)}_{i,t+1} =
+    w^{(b_t)}_{i,t}\,\exp\bigl(-\gammabt\,\hloss^{(b_t)}_{i,t}/2^{b_t}\bigr)$,
+    where
+\[
+    \hloss^{(b_t)}_{i,t}
+=
+    \frac{\loss_{i,t}}{q^{(b_t)}_{i,t}}\,\Ind{i \in S_{I_t,t}}
+\qquad\text{and}\qquad
+    q^{(b_t)}_{i,t} = \sum_{j \,:\, j \reach{t} i} p^{(b_t)}_{j,t}~.
+\]
+    }
+    \ENDFOR
+  \end{algorithmic}
+  \caption{\label{alg:exp3dom} Exp3-DOM}
+\end{algorithm}

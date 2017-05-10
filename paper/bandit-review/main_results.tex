@@ -1,22 +1,33 @@
 \section{Algorithms}
 
 \subsection{Exp3-SET}
-The Exp3-SET is similar to the Exp3 algorithm in most ways. Given in algorithm 1, 
+The Exp3-SET is exactly as the Exp3 algorithm, except for the formation of the surrogate loss. Given in algorithm 1, instead of dividing the surrogate loss $\loss_{i,t}$ with the probability of the action $i$, it is divided by $q_{i,t}$ as defined in the analysis part; that is, the probability that the loss of action $i$ is revealed. It is thus a direct and very natural extension of the Exp3 algorithm. 
+
+\subsection{Exp3-DOM}
+Since the Exp3-DOM holds with sharp bounds in the more general case of assymmetric graphs, it also leverages more techniques. Given in algorithm 2, as seen by the superscript ${}^{(b)}$ the algorithm runs $K$ $Exp3$ algorithms and then computes an approximation of the dominating set $R_t$ using the Greedy Set Cover algorithm. The size of $R_t$ is used as an index over Exp3 algorithms and decides which probability distribution to pick an action from. Interestingly, note in line 8 that whenever the exploration parameter $\gamma$ is small little exploration is done.
 
 \input{gsf_exp3set.tex}
 \unskip
+\input{gsf_exp3dom.tex}
+\unskip
+
+Conversely, when $\gamma$ is closed to one, all the weight is put on exploration, and the weights from the previous timestep counts for nothing. Lastly, the loss is expressed as a fraction of $\gamma^{(b_t)}/R_t$ which penalises for exploration. 
 
 \subsection{Bandit Online Linear Optimization}
 In this section we take a look at the main results from \citep{hazan}.
 Specifically  the algorithms used in the paper are presented and elaborated on.
-The main algorithm (algorithm 2), is composed of two prominent steps that are alternated with 
+The main algorithm, given in algorithm 3, is composed of two prominent steps that are alternated with 
 some probability. This algorithm uses reservoir sampling and the 
 properties of Dikin-ellipsoids to efficiently perform online bandit linear
 optimization that, as shown, can be bounded in terms of total variation.
 
 The algorithm has three main parts: calling SimplexSample with some probability, calling EllipsoidSample with the remaining probability mass, and updating the value $x_t$ at every round. At a high level the SimplexSample is an exploration step, while the EllipsoidSample is an exploration and exploitation step.
 
-Lines 1-4 initialises various quantities. Seen listed are the parameters of the algorithm: $\eta$ is the exploration/exploitation trade off rate, the algorithm is $\mathcal{V}$-self-concordant via $\mathcal{R}$, and a size parameter $k$ denotes the size of the reservoir kept for each of coordinate. 
+Lines 1-4 initialises various quantities. Seen listed are the parameters of the algorithm: $\eta$ is the exploration/exploitation trade off rate, the algorithm is $\mathcal{V}$-self-concordant via $\mathcal{R}$, and a size parameter $k$ denotes the size of the reservoir kept for each of coordinate. The variable $x$ is also initialised to be the index of the minimum point in $\mathcal{R}(x)$; the estimate for the mean loss of each action, zero.
+
+Then, at time $t$ some action is taken in a for-loop until time $T$. At each round the algorithm has the choice of exploring alone with a SimpleSample or exploring and exploiting with an EllipsoidSample step. The proportion of time spent in either of these tasks is determined by the parameter $\eta$ and the stage of the optimization as denoted by $t$. The reservoir of size $k$ is also taken into account due to how it affects the accuracy of our estimates of the mean losses being estimated. More generally, let the proportion of time spent exploring grows smaller as time goes on (time spent in SimplexSample) and the proportion of time spent exploring and exploiting increases in later stages (time spent in EllipsoidSample).
+
+Clearly, the estimate of the mean $\tilde{\mu}$ of each coordinate computed by the reservoir sampling procedure only gets updated during the SimplexSample call, but only gets used in the EllipsoidSample call. Intuitively this shpws that exploitation is akin to using the information of losses that have been collected for each action while exploration involves gathering this information. In line with that $\tilde{f_t}$ is not updated when in the SimplexSample step, but only in the EllipsoidSample step. 
 
 %algorithms 
 \input{bbb_mainalgo.tex}
@@ -26,13 +37,7 @@ Lines 1-4 initialises various quantities. Seen listed are the parameters of the 
 \input{bbb_ellipsoidsample.tex}
 \unskip
 
-The variable $x$ is also initialised to be the index of the minimum point in $\mathcal{R}(x)$; the estimate for the mean loss of each action, zero.
-
-Then, at time $t$ some action is taken in a for-loop until time $T$. At each round the algorithm has the choice of exploring alone with a SimpleSample or exploring and exploiting with an EllipsoidSample step. The proportion of time spent in either of these tasks is determined by the parameter $\eta$ and the stage of the optimization as denoted by $t$. The reservoir of size $k$ is also taken into account due to how it affects the accuracy of our estimates of the mean losses being estimated. More generally, let the proportion of time spent exploring grows smaller as time goes on (time spent in SimplexSample) and the proportion of time spent exploring and exploiting increases in later stages (time spent in EllipsoidSample).
-
 %TODO clarify what the $i_t$ step is doing 
-
-Clearly, the estimate of the mean $\tilde{\mu}$ of each coordinate computed by the reservoir sampling procedure only gets updated during the SimplexSample call, but only gets used in the EllipsoidSample call. Intuitively this shpws that exploitation is akin to using the information of losses that have been collected for each action while exploration involves gathering this information. In line with that $\tilde{f_t}$ is not updated when in the SimplexSample step, but only in the EllipsoidSample step. 
 %TODO clarify why the f_t is not updated in more detail
 
 \subsubsection{SimplexSample}
