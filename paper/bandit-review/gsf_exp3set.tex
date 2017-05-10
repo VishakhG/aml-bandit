@@ -1,0 +1,47 @@
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+
+    \STATE{\textbf{Parameter:} $\eta \in [0,1]$
+    }\\
+    \STATE{
+      \textbf{Initialize:} $w_{i,1} = 1$ for all $i \in V = \{1,\ldots,K\}$
+    }\\
+
+    \FOR{$t=1$  \TO T}
+    \STATE{
+      Feedback system $\{S_{i,t}\}_{i\in V}$ and losses $\loss_t$ are
+    generated but not disclosed~;
+    }\\
+    \STATE{
+      Set ${\dt p_{i,t} = \frac{w_{i,t}}{W_t}}$ for each $i\in V$, where
+    ${\dt W_t = \sum_{j \in V} w_{j,t}}$~;
+    }\\
+    \STATE{
+    Play action $I_t$ drawn according to distribution $p_t =
+    (p_{1,t},\dots,p_{K,t})$~;
+    }\\
+    \STATE{
+      Observe:
+      \begin{enumerate}
+      \item pairs $(i,\loss_{i,t})$ for all $i \in S_{I_t,t}$;
+      \item Feedback system $\{S_{i,t}\}_{i\in V}$ is disclosed;
+      \end{enumerate}
+    }
+
+    \STATE{
+    For any $i \in V$ set $w_{i,t+1} =
+    w_{i,t}\,\exp\bigl(-\eta\,\hloss_{i,t}\bigr)$, where
+\[
+    \hloss_{i,t}
+=
+    \frac{\loss_{i,t}}{q_{i,t}}\,\Ind{i \in S_{I_t,t}}
+\qquad\text{and}\qquad
+    q_{i,t} = \sum_{j \,:\, j \reach{t} i} p_{j,t}~.
+\]
+    }  
+    \ENDFOR
+    
+
+  \end{algorithmic}
+  \caption{\label{alg:seeifrelin} Bandit online linear optimization}
+\end{algorithm}

@@ -21,7 +21,28 @@
 \usepackage{multirow}
 \usepackage{amsthm}
 \usepackage{float}
+\usepackage[algo2e,ruled]{algorithm2e}
 
+\newcommand{\reach}[1]{\xrightarrow{{#1}}}
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\inner}[2]{ \left\langle {#1} \,,\, {#2} \right\rangle }
+\newcommand{\norm}[1]{\left\|{#1}\right\|}
+\newcommand{\defeq}{\stackrel{\rm def}{=}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\bsgn}{\mathbf{sgn}}
+\newcommand{\trace}{\mathrm{Tr}}
+\newcommand{\diag}{\mathrm{Diag}}
+\newcommand{\scF}{\mathcal{F}}
+\newcommand{\scR}{\mathcal{R}}
+\newcommand{\scX}{\mathcal{X}}
+\newcommand{\scY}{\mathcal{Y}}
+\newcommand{\scW}{\mathcal{W}}
+\newcommand{\dt}{\displaystyle}
+\newcommand{\loss}{\ell}
+\newcommand{\hloss}{\widehat{\loss}}
+\newcommand{\Loss}{L}
+\newcommand{\Lhat}{\widehat{\Loss}}
+\newcommand{\Ind}[1]{\field{I}{\{#1\}}}
 \newcommand{\KLanneal}{anneal-KL}
 \newcommand{\LRp}{$\textbf{lr}:p_{\theta}$}
 \newcommand{\qinit}{$\textbf{init}:q_{\phi}$}
