@@ -151,3 +151,53 @@ principle axes of the Dikin ellipsoid $W_1({\bf x})$ centered at ${\bf x}_t$. Fr
 variation. Refer to section 4 for a discussion of the algorithm.
 
 \input{bbb_proof.tex}
+
+\subsection{Linear Programming Relaxations}
+The main contribution of \citep{bertsimas} is to provide a hierarchy of LP-relaxations
+to approximately solve the restless bandits problem which is described in the introduction. The technique employed by \citep{bertsimas} directly draws inspiration from previous work and ideas in combinatorial optimization and stochastic optimization. 
+
+A first order relaxation for the restless bandits problem was introduced by \citep{whittle}. This version could be solved effeciently in polynomial time but there were many restrictions and assumptions made by the approach which makes it less than ideal. Another motivating result was the discovery by \citep{papad} that the general restless bandits is PSPACE-hard which makes it intractable in general. This obviously puts  emphasis on finding strong approximate solutions rather than solving the problem exactly. \\ 
+
+In the following we show how \citep{bertsimas} phrase the restless bandit problem as a LP problem. 
+
+Let the state-action space be  $\ell= \{(i,a): i \in \mathcal{L}, a \in  \mathcal{A}_i \}$
+with states $i$ and actions $a$. Then the following performance measures can be introduced
+$$x_j(u) = E_u[\sum_{t=0}^{\infty}I_j^a(t) \beta^t]$$
+where $I_j^a = 1$ if an action is taken at the time step $t$ in the state $j$, and $0$ otherwise. The optimization process that follows from the performance measure is then 
+$$Z^* = max_{u \in \mathcal{U}} \sum_{(i,a) \in \mathcal{L}} R_j^a x_j^a(u).$$  
+
+The authors show the explicit performance region spanned by the vectors $x(u)$ under all the policies that are in consideration. This leads to a mathematical program given as
+$$Z^* = max_{x \in \mathcal{X}}\sum_{(i,a)\in \mathcal{L}}R_i^a x_i^a$$ 
+where $x = (x_j^a).$
+
+As is typical of most linear programming formulations, the feasible set lives on a polytope of some type, in this case in $\mathcal {P}$ 
+$$\mathcal{P} = \{ x \in R_+^{|\mathcal{L}|} \}: \sum_{a \in \mathcal{A}} x_j^a = \alpha_j 
++ \beta \sum_{(i,a) \in \mathcal{L}} p_{i,j}^a x_i^a, j  \in \mathcal{L}.$$ 
+
+Most crucial to the paper, the authors present an argument that leads to an LP formulation of the problem.
+They present a known theorem that connects the polytope and the performance region. 
+\begin{theorem}
+	The following statements hold with $X$ being the performance region:
+		\begin{enumerate}
+			\item $X = \mathcal{P}$
+			\item The vertices of the polytope: $\mathcal{P}$ are achievable by stationary deterministic policies
+		\end{enumerate}
+\end{theorem}
+While the direction $X\subseteq\mathcal{P}$ was proved in 1960 by d'Epenoux, the authors contribute a proof of construction for the other direction. 
+
+With this in mind, the notion of performance region becomes important to the formulation of the problem as a LP. First take the following two performance measures
+$$x_{i_n}^1 = E_u[\sum_{t=0}^{\infty} I_{i_n}(t)\beta^t],\text{\;\;and}$$
+$$x_{i_n}^0(u) = E_u[\sum_{t=0}^{\infty}I_{i_n}(t) \beta^t],$$ 
+where $u$ is an admissible scheduling policy. Let
+$I_{i_n}^1(t)$ be $1$ if project $n$ is in state $i_n$ and active at time $t$, and $0$ otherwise. Similarly let $I_{i_n}^0(t)$ be $1$ if the project $n$ is in state $i_n$ and passive at time $t$ and $0$ otherwise.
+
+Thus for the current set of active and passive tasks one can give a performance measure, and then combine them to give a performance measure for the entire region: 
+$$
+X = \{x = (x_{i_n}^{a_n}(u))_{i_n \in \mathcal{L}_n, a_n \in \{0,1\}, n \in \mathcal{N}}|u \in \mathcal{U}\}$$
+
+From the theorem shown earlier we know that there is a correspondence between a discounted MDC and a polytope which means we can take the performance measures and create a linear program associated to the polytope:
+
+	$$Z^* = max_{x \in \mathcal{X}} \sum_{n \in \mathcal{N}} \sum_{i_n \in \mathcal{L}_n} 
+\sum_{a_n \in \{ 0,1\}} R_{i_n}^{a_n} x_{i_n}^{a_n}$$
+
+In this way, the authors achieve a general formulation for a linear program associated to the restless bandit problems by phrasing the discounted MDC formulation as a polytope with its associated linear program. 

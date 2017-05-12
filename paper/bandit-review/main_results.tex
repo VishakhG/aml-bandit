@@ -6,12 +6,12 @@ The Exp3-SET is exactly as the Exp3 algorithm, except for the formation of the s
 \subsection{Exp3-DOM}
 Since the Exp3-DOM holds with sharp bounds in the more general case of assymmetric graphs, it also leverages more techniques. Given in algorithm 2, as seen by the superscript ${}^{(b)}$ the algorithm runs $K$ $Exp3$ algorithms and then computes an approximation of the dominating set $R_t$ using the Greedy Set Cover algorithm. The size of $R_t$ is used as an index over Exp3 algorithms and decides which probability distribution to pick an action from. Interestingly, note in line 8 that whenever the exploration parameter $\gamma$ is small little exploration is done.
 
+Conversely, when $\gamma$ is closed to one, all the weight is put on exploration, and the weights from the previous timestep counts for nothing. Lastly, the loss is expressed as a fraction of $\gamma^{(b_t)}/R_t$ which penalises for exploration. 
+
 \input{gsf_exp3set.tex}
 \unskip
 \input{gsf_exp3dom.tex}
 \unskip
-
-Conversely, when $\gamma$ is closed to one, all the weight is put on exploration, and the weights from the previous timestep counts for nothing. Lastly, the loss is expressed as a fraction of $\gamma^{(b_t)}/R_t$ which penalises for exploration. 
 
 \subsection{Bandit Online Linear Optimization}
 In this section we take a look at the main results from \citep{hazan}.
@@ -48,78 +48,3 @@ Turning our attention to the SimplexSample procedure, its job is to implement re
 EllipsoidSample exploits the algorithm's knowledge of the adversary (loss surface) by using the estimate of the mean. This is a modification of a similar procedure outlined in \citep{abernethy}. \citep{abernethy} manages to prove that this style of sampling procedure is unbiased and has low variation with respect to the regularization which in this case corresponds to the self-concordant functions. Like in SimplexSample, a point $y_t$ is chosen, however, this time it is chosen from the endpoints of the principal axes of the Dikin ellipsoid $W_1(x_t)$ centered at $x_t$. Recall that $x_t$ was constructed to minimize the FTRL loss $\eta \sum_{\tau=1}^T\tilde{f_t^T}x +\mathcal{R}$. Since the loss minimized was in terms of the estimate of the loss vector, this is where the algorithm exploits its prior knowledge of the losses associated with the coordinates. Furthermore, the estimate of $\tilde{f_t}$ is updated at the end of EllipsoidSample to incorporate the new knowledge of the mean $\tilde{\mu_t}$ and the actual loss suffered $f_t$. It is done by adding $f_t$ to $\eta (f_{t}^Ty_t - \tilde{\mu_{t}^T}y_t)\epsilon \lambda_{it}^{\frac{1}{2}}v_{it}$.
 
 The procedure is quite akin to the exploration-exploitation steps taken in FTRL or Exp3, but there is a lot of mathematical machinery needed to ensure that the sampled point $y_t$ will be in the feasible set and that the ellipsoid sampling procedure has nice properties that ensure correctness and efficiency. 
-
-
-
-\subsection{Restless bandits}
-
-\subsubsection{Overview of results}
-The main contribution of \citep{bertsimas} is to provide a hierarchy of LP-relaxations
-to approximately solve the restless bandits problem which we described earlier.
-
-In this section we describe the ideas that influenced these results, formally state the LP-relaxation technique developed by \citep{bertsimas}, and  summarize experimental results provided by the authors.
-
-\subsubsection{Related ideas and motivating work}
-The technique employed by \citep{bertsimas} directly draws inspiration from previous work and ideas in combinatorial optimization and stochastic optimization. 
-
-A first order relaxation for the restless bandits problem was introduced by \citep{whittle}. This version could be solved effeciently in polynomial time but there were many restrictions and assumptions made by the approach which makes it less than ideal.\\
-
-Another motivating result was the discovery  by \citep{papad}that the general restless bandits is PSPACE-hard which makes it intractable in general. This obviously puts the emphasis on trying to find good approximate solutions rather than solve the problem exactly. \\ 
-
-\subsubsection{Formulation and relaxation}
-
-We now show how \citep{bertsimas} phrase the restless bandit problem as a LP problem. 
-
-Let the state-action space be  $\ell= \{(i,a): i \in \mathcal{L}, a \in  \mathcal{A}_i \}$
-with states $i$ and actions $a$. Then the following performance measures can be introduced:
-
-$x_j(u) = E_u[\sum_{t=0}^{\infty}I_j^a(t) \beta^t]$ where $I_j^a = 1$ if an action is taken at the time step t in the state j, and 0 otherwise. 
-
-The optimization process that follows from the performance measure is as follows 
-$Z^* = max_{u \in \mathcal{U}} \sum_{(i,a) \in \mathcal{L}} R_j^a x_j^a(u)$.  
-
-Finally the authors show the explicit performance region spanned by the vectors $x(u)$ under all the policies that are in consideration. This leads to a mathematical program: 
-
-$Z^* = max_{x \in \mathcal{X}}\sum_{(i,a)\in \mathcal{L}}R_i^a x_i^a$ where $x = (x_j^a)$. 
-
-As is typical of most linear programming formulations, the feasible set lives on a polytope of some type, in this case they live in the following polyhedron $\mathcal {P}$ 
-
-$\mathcal{P} = \{ x \in R_+^{|\mathcal{L}|} \}: \sum_{a \in \mathcal{A}} x_j^a = \alpha_j 
-+ \beta \sum_{(i,a) \in \mathcal{L}} p_{i,j}^a x_i^a, j  \in \mathcal{L}$ 
-
-Next the authors present the crucial argument that leads to an LP formulation of the problem.
-They present a known theorem that connects the polytope and the performance region. 
-
-The following statements hold
-\begin{enumerate}
-\item
- $X = \mathcal{P}$ \\
-\item
-  The vertices of the polytope: $\mathcal{P}$ are achievable by stationary 
-deterministic policies
-\end{enumerate} 
-
-The notion of performance region becomes important to the formulation of the problem as an
-LP so we list them here:
-
-First take the following two performance measures:
-$x_{i_n}^1 = E_u[\sum_{t=0}^{\infty} I_{i_n}(t)\beta^t]$ 
-
-$x_{i_n}^0(u) = E_u[\sum_{t=0}^{\infty}I_{i_n}(t) \beta^t]$ where $u$ is an admissible scheduling policy.  \\
-
-$I_{i_n}^1(t)$ is 1 if project n is in state $i_n$and active at time t and 0 otherwise.
-
-$I_{i_n}^0(t)$ is 1 if the project n is in state $i_n$ and passive at time t and 0 otherwise.
-
-Thus we give one performance measure to the current set of active tasks and one for the current set of passive tasks. To combine them and get a performance measure for the entire region would take: 
-
-\begin{align*}
-X = \{x = (x_{i_n}^{a_n}(u))_{i_n \in \mathcal{L}_n, a_n \in \{0,1\}, n \in \mathcal{N}|u \in \mathcal{U}}\}
-\end{align*}
-
-From the theorem shown earlier we know that there is a correspondence between a discounted MDC and a polytope which means we can take the performance measures and create a linear program associated to the polytope.
-
-$(LP) Z* = max_{x \in \mathcal{X}} \sum_{n \in \mathcal{N}} \sum_{i_n \in \mathcal{L}_n} 
-\sum_{a_n \in \{ 0m1\} R_{i_n}^{a_n} x_{i_n}^{a_n}} $
-
-Thus we get a general formulation for a linear program associated to the restless bandit problems by phrasing the discounted MDC formulation as a polytope with its associated linear program. 

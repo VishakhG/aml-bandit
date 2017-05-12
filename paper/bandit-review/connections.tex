@@ -1,16 +1,16 @@
-\section{Connections and overlap}
-There are some interesting connections between the papers at a high level that are worth considering. One is the notion of using mathematical structure to create a solution to a
-problem, and the second is the idea of generalizing a set of related problems such that every one of the specific problems are special cases in the generalization.
-\subsection{Mathematical techniques}
-In all the papers a key element of the solution was a novel or sophisticated application of a mathematical tool. In \citep{hazan} the authors recognize that they can augment previous approaches that used self concordant functions and FTRL with resevoir sampling to extend those solutions to the bandit setting.
+\section{Connections and Overlap}
+There are some interesting connections between the papers at a high level that are worth considering. One is the notion of using mathematical structure to create a solution to a problem, and the second is the idea of generalizing a set of related problems such that
+every one of the specific problems are special cases in the generalization.
+
+In all the papers a key element of the solution was a novel or sophisticated application of a mathematical tool. In \citep{hazan} the authors recognize that they can augment previous approaches that used self-concordant functions and FTRL with resevoir sampling to extend those solutions to the bandit setting.
 
 In \citep{alon} the authors use graphs to represent the mutual information sets that might exist in a general online learning problem to interpolate between the bandit and full-information setting cleanly.
 
-In \citep{bertsimas} the key result of the paper was a novel approach to solving the restless bandit problem that was due to the realization that there was a stronger relationship between the polytope of the LP and the restless bandit feasible set than previously realized. This allowed them to get stronger results, even though previously people had attempted linear programming solutions to the restless bandit problem.
+In \citep{bertsimas} the key result of the paper was a novel approach to solving the restless bandit problem that was due to the realization that there was a stronger relationship between the polytope of the LP and the restless bandit feasible set than previously realized.
 
-\subsection{Interpolating between problem settings}
-Another overarching theme was generalizing a problem such that previously disparate problems are special cases of the generalization. This was expressed in both \citep{hazan} and\citep{alon}. In \citep{hazan}They do this by phrasing regret in terms of total variation thus taking the no variation and high variation scenarios as special cases. 
+Another overarching theme was generalizing a problem such that previously disparate problems are special cases of the generalization. This was expressed in both \citep{hazan} and \citep{alon}. In \citep{hazan} they do this by phrasing regret in terms of total variation, thus having no variation takes you to the full information setting, and having lots of variation to the adversarial bandit. 
 
 In \citep{alon} they express the information sets in an online learning problem via graphs, such that edges between vertices means that rewards for one are recieved when they are for the other. In this way, setting the graph to be fully connected takes you to the full information setting and removing all edges to the bandit.
 
-
+\section{Open Problems}
+With regards to open problems, \citep{hazan} asks if the regret bounds can be improved and if one can bound the regret based on the variation of the best expert in hindsight. In \citep{alon} the authors asks if one can make the revealed feedback graph dependent on the specific loss obtained at that round. Lastly, \citep{abernethy} conjectures that the Exp3 could be bounded by the total variation of losses of the experts. While these papers provides a strong platform for diving into this problem, unfortunately we did not manage such a solution. 
